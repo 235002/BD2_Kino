@@ -39,8 +39,8 @@
 			if($wszystko_OK == true)
 			{
 				//DELETE
-				$polaczenie->query("DELETE FROM sala WHERE ID_repertuar = $ID_repertuar");
-				$polaczenie->query("DELETE FROM repertuar WHERE ID_repertuar = $ID_repertuar");
+				$polaczenie->query("DELETE FROM sala WHERE ID_repertuar = $ID_repertuar;");
+				$polaczenie->query("DELETE FROM repertuar WHERE ID_repertuar = $ID_repertuar;");
 				
 				$rezultat->free_result();
 			}
