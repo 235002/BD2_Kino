@@ -36,8 +36,6 @@ body{
 	border-top: 1px solid #751b1b;
 	border-bottom: 1px solid #751b1b;
 	justify-content: center;
-	display: flex;
-	position: fixed;
 }
 
 .option

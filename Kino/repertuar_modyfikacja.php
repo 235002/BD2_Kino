@@ -70,6 +70,9 @@
 									WHERE ID_repertuar = $ID_repertuar");
 				
 				$rezultat->free_result();
+				$polaczenie->close();
+				header("Location: modyfikuj_seans.php");
+				exit();
 			}
 			else 
 			{

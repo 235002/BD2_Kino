@@ -16,7 +16,8 @@
 		else
 		{		
 			//Logowanie
-			/*$login = "JanNow";
+			/*
+			$login = "JanNow";
 			$haslo = "1234";
 			$query = "SELECT * FROM Osoba WHERE login = '$login' AND haslo = '$haslo'";
 			$rezultat = $polaczenie->query($query);
@@ -32,7 +33,8 @@
 								.$wiersz['login']." ".$wiersz['haslo']." ".$wiersz['e-mail']." "
 								.$wiersz['nr_telefonu']." ".$wiersz['ID_rodzajkonta']." ".$wiersz['liczba_punktow']."<br/><br/>";
 			
-			//Rejestracja
+			*///Rejestracja
+			/*
 			$email = "test1@wp.pl";
 			$login = "test1";
 			$imie = "TEST1";
@@ -61,32 +63,9 @@
 				echo "Wynik dla operacji rejestracji.<br/>";
 				echo "Kwerenda: ".$query3."<br/><br/>";
 				$polaczenie->query($query3);
-			}*/
-			/*
-			//Dodawanie filmu
-			$tytul = "TEST1";
-			$rezyser = "TEST1";
-			$scenariusz = "TEST1";
-			$gatunek = "TEST1";
-			$premiera = date('Y-m-d',strtotime("2000-01-01"));
-			$kraj_pochodzenia = "TEST1";
-			$czas_trwania = 100;
-			$query = "insert into Film (`tytul`, `rezyser`, `scenariusz`, `gatunek`, `premiera`, `kraj_pochodzenia`, `czas_trwania`) 
-								values ('$tytul', '$rezyser', '$scenariusz', '$gatunek', '$premiera', '$kraj_pochodzenia', '$czas_trwania')";
-			$query2 = "SELECT ID_film FROM Film WHERE tytul='$tytul' AND rezyser='$rezyser'  AND scenariusz='$scenariusz' AND premiera='$premiera';";
-			
-			$rezultat = $polaczenie->query($query2);
-			if(!$rezultat)
-				throw new Exception($polaczenie->error);
-			
-			if($rezultat->num_rows == 0){
-				echo "Wynik dla operacji dodawanie filmu.<br/>";
-				echo "Kwerenda: ".$query."<br/><br/>";
-				$polaczenie->query($query);
 			}
-			else{
-				echo "Taki film znajduje się już w bazie!<br/>";
-			}*/
+			*/
+			
 			
 			//Modyfikowanie filmu
 			/*$tytul = "TEST1";
@@ -191,83 +170,4 @@
 	}	
 ?>
 
-<!DOCTYPE HTML>
-<html lang="pl">
-<head>
-	<meta charset="utf-8"/>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-	<title>Kino ODRA</title>
-	
-	<style>
-		.error
-		{
-			color: red;
-			margin-top: 10px;
-			margin-bottom: 10px;
-		}
-	</style>
-</head>
-<body>
-	<div id="modyfikuj_film">
-		<form method="post">	
-			Tytuł filmu: <br/> <input type="text" name="tytul" value="<?php
-				if(isset($_SESSION['tytul']))
-				{
-					echo $_SESSION['tytul'];
-					unset($_SESSION['tytul']);
-				}
-			?>"/><br/>
-			
-			Reżyser: <br/> <input type="text" name="rezyser" value="<?php
-				if(isset($_SESSION['rezyser']))
-				{
-					echo $_SESSION['rezyser'];
-					unset($_SESSION['rezyser']);
-				}
-			?>"/><br/>
-			
-			Scenariusz: <br/> <input type="text" name="scenariusz" value="<?php
-				if(isset($_SESSION['scenariusz']))
-				{
-					echo $_SESSION['scenariusz'];
-					unset($_SESSION['scenariusz']);
-				}
-			?>"/><br/>
-			
-			Gatunek: <br/> <input type="text" name="gatunek" value="<?php
-				if(isset($_SESSION['gatunek']))
-				{
-					echo $_SESSION['gatunek'];
-					unset($_SESSION['gatunek']);
-				}
-			?>"/><br/>
-			
-			Premiera: <br/> <input type="date" name="premiera" value="<?php
-				if(isset($_SESSION['premiera']))
-				{
-					echo $_SESSION['premiera'];
-					unset($_SESSION['premiera']);
-				}
-			?>"/><br/>
-			
-			Kraj pochodzenia: <br/> <input type="text" name="kraj_pochodzenia" value="<?php
-				if(isset($_SESSION['kraj_pochodzenia']))
-				{
-					echo $_SESSION['kraj_pochodzenia'];
-					unset($_SESSION['kraj_pochodzenia']);
-				}
-			?>"/><br/>
-			
-			Czas trwania: <br/> <input type="number" name="czas_trwania" value="<?php
-				if(isset($_SESSION['czas_trwania']))
-				{
-					echo $_SESSION['czas_trwania'];
-					unset($_SESSION['czas_trwania']);
-				}
-			?>"/><br/>
-			<br/>
-			<input type="submit" value="Modyfikuj dane"/>
-		</form>
-	</div>
-</body>
-</html>
+

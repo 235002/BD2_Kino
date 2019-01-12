@@ -2,13 +2,11 @@
 
 	session_start();
 	
-	if (!isset($_POST['ID_repertuar']))
+	if (!isset($_POST['ID_film']))
 	{
-		header('Location: usun_seans.php');
+		header('Location: dodaj_seans.php');
 		exit();
 	}
-	
-	$wszystko_OK=true;
 	
 	mysqli_report(MYSQLI_REPORT_STRICT);
 	
@@ -23,33 +21,34 @@
 		}
 		else
 		{		
-			//Usuwanie seansu			
-			//Walidacja
-			$ID_repertuar = $_POST['ID_repertuar'];
-			
-			//Sprawdzenie czy usuwany seans jest w repertuarze
-			if(!$rezultat = $polaczenie->query("SELECT ID_repertuar FROM repertuar WHERE ID_repertuar = $ID_repertuar"))
+			$ID_film = $_POST['ID_film'];
+
+			$query = "SELECT ID_repertuar FROM repertuar WHERE ID_film = '$ID_film'";
+
+			$rezultat = $polaczenie->query($query);
+			if(!$rezultat)
 			{
 				$wszystko_OK = false;
-				$_SESSION['e_dodawanie_seansu']="Podany seans nie istnieje!";
-				echo "Podany seans nie istnieje!"."<br/>";
+				$_SESSION['e_dodawanie_seansu']="Podany film nie istnieje!";
+				echo "Podany film nie istnieje!"."<br/>";
 				$rezultat->free_result();
 			}
-			
-			if($wszystko_OK == true)
+
+			if(($wszystko_OK = true) && ($ID_film != 0))
 			{
+				$wynik = $rezultat->fetch_assoc();
+				$ID_repertuar = $wynik['ID_repertuar'];
+
 				//DELETE
 				$polaczenie->query("DELETE FROM sala WHERE ID_repertuar = $ID_repertuar;");
 				$polaczenie->query("DELETE FROM repertuar WHERE ID_repertuar = $ID_repertuar;");
-				
+				$polaczenie->query("DELETE FROM film WHERE ID_film = '$ID_film';");
+
 				$rezultat->free_result();
 				$polaczenie->close();
-				header("Location: usun_seans.php");
+				header("Location: usun_film.php");
 				exit();
-			}
-			else 
-			{
-				echo "Nie udało się usunąć danych z bazy danych! "."<br/>";
+
 			}
 			$polaczenie->close();
 		}

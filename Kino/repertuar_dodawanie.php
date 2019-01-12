@@ -76,6 +76,9 @@
 					}
 				}	
 				$rezultat->free_result();
+				$polaczenie->close();
+				header("Location: dodaj_seans.php");
+				exit();
 			}
 			else 
 			{

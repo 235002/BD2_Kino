@@ -24,9 +24,7 @@
 			}
 			else
 			{	
-				$rezultat = $polaczenie->query("SELECT repertuar.ID_repertuar, film.tytul, repertuar.godzina, repertuar.data
-												 FROM repertuar 
-												 INNER JOIN film ON repertuar.ID_film = film.ID_film");
+				$rezultat = $polaczenie->query("SELECT ID_film, tytul FROM film ");
 				if (!$rezultat) throw new Exception($polaczenie->error);
 			}
 		}
@@ -36,28 +34,24 @@
 			echo '<br/>Informacja developerska: '.$e;
 		}	
 	?>
-	<div id="usun_seans">
-		<form action="repertuar_usuwanie.php" method="post">
-			Modyfikowanie seansu. <br/>
-			Wybierz seans do usunięcia:
-						<select name="ID_repertuar">						
-							<option value="0">Wybierz seans</option>
+	<div id="usun_film">
+		<form action="film_usuwanie.php" method="post">
+			Usuwanie filmu z bazy danych. <br/>
+			Wybierz film: 
+						<select name="ID_film">						
+							<option value="0">Wybierz film</option>
 							<?php
 								while($row = $rezultat->fetch_assoc())
 								{
 								?>
-								<option value = "<?php echo($row['ID_repertuar'])?>" >
-									<?php echo("ID repertuaru: ".$row['ID_repertuar']." <br/>".
-											   "Tytuł filmu: ".$row['tytul']." <br/>".
-											   "Godzina seansu: ".$row['godzina']." <br/>".
-											   "Data seansu: ".$row['data']." <br/>");
-									?>
+								<option value = "<?php echo($row['ID_film'])?>" >
+									<?php echo($row['tytul'])?>
 								</option>
 								<?php
 								}               
 							?>
-						</select><br/>
-			<input type="submit" value="Usuń seans"/>
+						</select><br />
+			<input type="submit" value="Usun film"/><br/>
 		</form>
 	</div>
 </body>
