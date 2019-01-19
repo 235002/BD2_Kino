@@ -1,0 +1,25 @@
+.messagePanel { border: solid 1px black; width: 55%; height: 55%; }
+
+.seat {
+    
+    width: 3.5%;
+    height: 3.5%;
+    margin: 0.6%;
+    border: solid 1px black;
+    float: left;
+}
+
+.clearfix { clear: both;}
+.available {
+    background-color: green;
+}
+.unavailable {
+    background-color: #000000;
+}
+
+.hovering{
+	background-color: #ae59b3;
+}
+.selected{
+    background-color: red;
+}
