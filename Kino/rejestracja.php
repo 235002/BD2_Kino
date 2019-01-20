@@ -75,7 +75,6 @@
 			$_SESSION['e_haslo'] = "Podane hasła nie są identyczne";
 		}
         
-        
         //Hashowanie haseł na razie nie potrzebne
         //$haslo_hash = password_hash($haslo1,PASSWORD_DEFAULT);
         $haslo = $haslo1;
@@ -157,7 +156,6 @@
 					VALUES (NULL, '$imie', '$nazwisko', '$login', '$haslo', '$email', $nr_telefonu, 3, 0);"))
 					{
 						$_SESSION['udanarejestracja'] = true;
-						//header('Location: witamy.php');
 					}
 					else
 					{
@@ -182,6 +180,12 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 	<title>Kino Odra</title>
 	<script src='https://www.google.com/recaptcha/api.js'></script>
+	<link rel="stylesheet" href="CSS/mainStyle.css">
+	<link rel="stylesheet" href="CSS/styles.css">
+	<link rel="stylesheet" href="CSS/style.css">
+    <script src ="scripts/jQuery.js"></script>
+    <script src ="scripts/script.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,900&amp;subset=latin-ext" rel="stylesheet"/>
 	
 	<style>
 		.error
@@ -192,134 +196,201 @@
 		}
 	</style>
 </head>
-<body>
-	<form method="post">
-		Imie: <br/> <input type="text" name="imie" value="<?php
-			if(isset($_SESSION['fr_imie']))
-			{
-				echo $_SESSION['fr_imie'];
-				unset($_SESSION['fr_imie']);
-			}
-		?>"/><br/>
-		<?php
-			if(isset($_SESSION['e_imie']))
-			{
-				echo '<div class="error">'.$_SESSION['e_imie'].'</div>';
-				unset($_SESSION['e_imie']);
-			}
-		?>
-		
-		Nazwisko: <br/> <input type="text" name="nazwisko" value="<?php
-			if(isset($_SESSION['fr_nazwisko']))
-			{
-				echo $_SESSION['fr_nazwisko'];
-				unset($_SESSION['fr_nazwisko']);
-			}
-		?>"/><br/>
-		<?php
-			if(isset($_SESSION['e_nazwisko']))
-			{
-				echo '<div class="error">'.$_SESSION['e_nazwisko'].'</div>';
-				unset($_SESSION['e_nazwisko']);
-			}
-		?>
-		
-		Login: <br/> <input type="text" name="login" value="<?php
-			if(isset($_SESSION['fr_login']))
-			{
-				echo $_SESSION['fr_login'];
-				unset($_SESSION['fr_login']);
-			}
-		?>"/><br/>
-		<?php
-			if(isset($_SESSION['e_login']))
-			{
-				echo '<div class="error">'.$_SESSION['e_login'].'</div>';
-				unset($_SESSION['e_login']);
-			}
-		?>
+<body><div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="#">Filmy</a>
+        <a href="#">Repertuar</a>
+        <a href="#">Kup</a>
+        <a href="#">Zarezerwuj</a>
+    </div>
 
-         E-mail: <br/> <input type="text" name="email" value="<?php
-            if(isset($_SESSION['fr_email']))
-            {
-                echo $_SESSION['fr_email'];
-                unset($_SESSION['fr_email']);
-            }
-        ?>"/><br/>
-        <?php
-			if(isset($_SESSION['e_email']))
-			{
-				echo '<div class="error">'.$_SESSION['e_email'].'</div>';
-				unset($_SESSION['e_email']);
-			}
-		?>
+	<div  id="menu">
+		<ul >	
+			<li>
+				<a href="#news"><span color onclick="openNav()">Menu</span></a>
+			</li>
+			<li>
+				<a class="active" href="index.php">Home</a>
+			</li>
+			<li>
+				<a href="kontakt.php">Kontakt</a>
+			</li>
+			<li>
+				<a onclick="document.getElementById('id01').style.display='block'">Logowanie</a>
+			</li>
+			<li>
+				<a href="rejestracja.php">Rejestracja</a>
+			</li>
+			<li>
+				<a href="konto.php">Moje Konto</a>
+			</li>
+			<li>
+				<?php if(isset($_SESSION['zalogowany']))
+						echo '<a href="logout.php">Wyloguj</a>';
+				?>
+			</li>
+		</ul>
+    </div>
 
-        Numer Telefonu: <br/> <input type="text" name="nr_telefonu" value="<?php
-            if(isset($_SESSION['fr_nr_telefonu']))
-            {
-                echo $_SESSION['fr_nr_telefonu'];
-                unset($_SESSION['fr_nr_telefonu']);
-            }
-        ?>"/><br/>
-        <?php
-            if(isset($_SESSION['e_nr_telefonu']))
-            {
-                echo '<div class="error">'.$_SESSION['e_nr_telefonu'].'</div>';
-                unset($_SESSION['e_nr_telefonu']);
-            }
-        ?>
-
-        Haslo: <br/> <input type="password" name="haslo1" value="<?php
-			if(isset($_SESSION['fr_haslo1']))
-			{
-				echo $_SESSION['fr_haslo1'];
-				unset($_SESSION['fr_haslo1']);
-			}
-		?>"/><br/>
-		<?php
-			if(isset($_SESSION['e_haslo']))
-			{
-				echo '<div class="error">'.$_SESSION['e_haslo'].'</div>';
-				unset($_SESSION['e_haslo']);
-			}
-		?>
-		
-		Powtórz hasło: <br/> <input type="password" name="haslo2" value="<?php
-			if(isset($_SESSION['fr_haslo2']))
-			{
-				echo $_SESSION['fr_haslo2'];
-				unset($_SESSION['fr_haslo2']);
-			}
-		?>"/><br/>
-
-		<label>
-			<input type="checkbox" name="regulamin" <?php
-				if(isset($_SESSION['fr_regulamin']))
-				{
-					echo "checked";
-					unset($_SESSION['fr_regulamin']);
-				}
+      	<div id="id01" class="modal">
+            <span onclick="document.getElementById('id01').style.display='none'" 
+          class="close" title="Close Modal">&times;</span>
+          
+            <!-- Modal Content -->
+            <form method="post" class="modal-content animate" action="zaloguj.php">
+				<div class="imgcontainer">
+					<img src="images/avatar_2.png"  height="25%" width="25%" alt="Avatar" class="avatar">
+				</div>
+          
+				<div class="container">
+					<label for="uname"><b>Login</b></label>
+					<input type="text" placeholder="Wprowadź Login" name="login" required>
 			
-			?>/> Akceptuję regulamin
-		</label>
-		<?php
-			if(isset($_SESSION['e_regulamin']))
-			{
-				echo '<div class="error">'.$_SESSION['e_regulamin'].'</div>';
-				unset($_SESSION['e_regulamin']);
-			}
-		?>
-		
-		<div class="g-recaptcha" data-sitekey="6LfxL4kUAAAAAB5uRWatbY_D1mJiUK-hCcyQYKJR"></div>
-		<?php
-			if(isset($_SESSION['e_bot']))
-			{
-				echo '<div class="error">'.$_SESSION['e_bot'].'</div>';
-				unset($_SESSION['e_bot']);
-			}
-		?>
-		<br/>
-		<input type="submit" value="Zarejestruj się"/>
-	</form>
+					<label for="psw"><b>Hasło</b></label>
+					<input type="password" placeholder="Wprowadź Hasło" name="password" required>
+			
+					<button type="submit">Login</button>
+				</div>
+          
+              	<div class="container" style="background-color:#f1f1f1">
+            		<button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+              	</div>
+            </form>
+        </div>
+	
+	
+      <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
+      <<div id="wrapper">
+            <div id="content">
+				<form method="post">
+						Imie: <br/> <input type="text" name="imie" value="<?php
+						if(isset($_SESSION['fr_imie']))
+						{
+							echo $_SESSION['fr_imie'];
+							unset($_SESSION['fr_imie']);
+						}
+					?>"/><br/>
+					<?php
+						if(isset($_SESSION['e_imie']))
+						{
+							echo '<div class="error">'.$_SESSION['e_imie'].'</div>';
+							unset($_SESSION['e_imie']);
+						}
+					?>
+					
+					Nazwisko: <br/> <input type="text" name="nazwisko" value="<?php
+						if(isset($_SESSION['fr_nazwisko']))
+						{
+							echo $_SESSION['fr_nazwisko'];
+							unset($_SESSION['fr_nazwisko']);
+						}
+					?>"/><br/>
+					<?php
+						if(isset($_SESSION['e_nazwisko']))
+						{
+							echo '<div class="error">'.$_SESSION['e_nazwisko'].'</div>';
+							unset($_SESSION['e_nazwisko']);
+						}
+					?>
+					
+					Login: <br/> <input type="text" name="login" value="<?php
+						if(isset($_SESSION['fr_login']))
+						{
+							echo $_SESSION['fr_login'];
+							unset($_SESSION['fr_login']);
+						}
+					?>"/><br/>
+					<?php
+						if(isset($_SESSION['e_login']))
+						{
+							echo '<div class="error">'.$_SESSION['e_login'].'</div>';
+							unset($_SESSION['e_login']);
+						}
+					?>
+
+					E-mail: <br/> <input type="text" name="email" value="<?php
+						if(isset($_SESSION['fr_email']))
+						{
+							echo $_SESSION['fr_email'];
+							unset($_SESSION['fr_email']);
+						}
+					?>"/><br/>
+					<?php
+						if(isset($_SESSION['e_email']))
+						{
+							echo '<div class="error">'.$_SESSION['e_email'].'</div>';
+							unset($_SESSION['e_email']);
+						}
+					?>
+
+					Numer Telefonu: <br/> <input type="text" name="nr_telefonu" value="<?php
+						if(isset($_SESSION['fr_nr_telefonu']))
+						{
+							echo $_SESSION['fr_nr_telefonu'];
+							unset($_SESSION['fr_nr_telefonu']);
+						}
+					?>"/><br/>
+					<?php
+						if(isset($_SESSION['e_nr_telefonu']))
+						{
+							echo '<div class="error">'.$_SESSION['e_nr_telefonu'].'</div>';
+							unset($_SESSION['e_nr_telefonu']);
+						}
+					?>
+
+					Hasło: <br/> <input type="password" name="haslo1" value="<?php
+						if(isset($_SESSION['fr_haslo1']))
+						{
+							echo $_SESSION['fr_haslo1'];
+							unset($_SESSION['fr_haslo1']);
+						}
+					?>"/><br/>
+					<?php
+						if(isset($_SESSION['e_haslo']))
+						{
+							echo '<div class="error">'.$_SESSION['e_haslo'].'</div>';
+							unset($_SESSION['e_haslo']);
+						}
+					?>
+					
+					Powtórz hasło: <br/> <input type="password" name="haslo2" value="<?php
+						if(isset($_SESSION['fr_haslo2']))
+						{
+							echo $_SESSION['fr_haslo2'];
+							unset($_SESSION['fr_haslo2']);
+						}
+					?>"/><br/>
+
+					<label>
+						<input type="checkbox" name="regulamin" <?php
+							if(isset($_SESSION['fr_regulamin']))
+							{
+								echo "checked";
+								unset($_SESSION['fr_regulamin']);
+							}
+						
+						?>/> Akceptuję regulamin
+					</label>
+					<?php
+						if(isset($_SESSION['e_regulamin']))
+						{
+							echo '<div class="error">'.$_SESSION['e_regulamin'].'</div>';
+							unset($_SESSION['e_regulamin']);
+						}
+					?>
+					
+					<div class="g-recaptcha" data-sitekey="6LfxL4kUAAAAAB5uRWatbY_D1mJiUK-hCcyQYKJR"></div>
+					<?php
+						if(isset($_SESSION['e_bot']))
+						{
+							echo '<div class="error">'.$_SESSION['e_bot'].'</div>';
+							unset($_SESSION['e_bot']);
+						}
+					?>
+					<br/>
+					<input type="submit" value="Zarejestruj się"/>
+				</form>
+            </div>
+      </div>
 </body>
 </html>

@@ -141,12 +141,14 @@
 					}
 					else
 					{
-							throw new Exception($polaczenie->error);
+						$_SESSION['udana_modyfikacja'] = false;
+						throw new Exception($polaczenie->error);
 					}
 				}		
 				else 
 				{
-					echo "Nie udało się zapisać danych do bazy danych! "."<br/>";
+					$_SESSION['e_zapis'] = "Nie udało się zapisać danych do bazy danych! "."<br/>";
+					header('Location: modyfikuj_film.php');
 				}
 				$polaczenie->close();
 			}

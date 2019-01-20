@@ -71,12 +71,15 @@
 				
 				$rezultat->free_result();
 				$polaczenie->close();
+				$_SESSION['modyfikacja_udana'] = true;
 				header("Location: modyfikuj_seans.php");
 				exit();
 			}
 			else 
 			{
+				$_SESSION['modyfikacja_udana'] = false;
 				echo "Nie udało się zapisać danych do bazy danych! "."<br/>";
+				header("Location: modyfikuj_seans.php");
 			}
 			$polaczenie->close();
 		}

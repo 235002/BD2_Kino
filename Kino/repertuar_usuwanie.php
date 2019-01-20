@@ -36,6 +36,12 @@
 				$rezultat->free_result();
 			}
 			
+			if($_POST['ID_repertuar'] == 0)
+			{
+				$wszystko_OK = false;
+				$_SESSION['usuwanie_prawidlowe']= false;
+			}
+			
 			if($wszystko_OK == true)
 			{
 				//DELETE
@@ -44,12 +50,15 @@
 				
 				$rezultat->free_result();
 				$polaczenie->close();
+				$_SESSION['usuwanie_prawidlowe'] = "Prawidłowo usunięto seans. <br/>";
 				header("Location: usun_seans.php");
 				exit();
 			}
 			else 
 			{
+				$_SESSION['usuwanie_nieprawidlowe'] = "Nie udało się usunąć seansu. <br/>";
 				echo "Nie udało się usunąć danych z bazy danych! "."<br/>";
+				header("Location: usun_seans.php");
 			}
 			$polaczenie->close();
 		}

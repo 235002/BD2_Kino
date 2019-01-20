@@ -17,69 +17,68 @@
 	
 	<meta name="description" content="Kino ODRA - spotkajmy się w kinie!" />
 	<meta name="keywords" content="kino, filmy, repertuar, seans, odra" />
-	
-	<link href="style.css" rel="stylesheet" type="text/css" />
+
+	<link rel="stylesheet" href="CSS/mainStyle.css" type="text/css"> 
+	<link rel="stylesheet" href="CSS/styles.css" type="text/css"> 
+	<link rel="stylesheet" href="CSS/style.css" type="text/css"> 
+    <script src ="scripts/jQuery.js"></script>
+    <script src ="scripts/script.js"></script>
 	<link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,900&amp;subset=latin-ext" rel="stylesheet"/>
 </head>	
 <body>
-	<div id="wrapper" >
-		<div id="header">
-			<div id="logo">
-				<b><span style="color: #2424ff;">KINO</span> <span style="color: #cc0000">ODRA</span></b>
-			</div>
-			<div id="menu">
-				<div class="option">
-					<a href="#" >Repertuar</a>
-				</div>
-				<div class="option">
-					<a href="konto.php" style="decoration: none;">Moje konto</a>
-				</div>
-				<div id="login">
-					<form action="zaloguj.php" method="post">
-					Login: <input type="text" name="login"/><br/>
-					Hasło: <input type="password" name="haslo"/><br/>
-					<input type="submit" value="Zaloguj"/><br/>
-					</form>
 
-					<?php
-						if(isset($_SESSION['blad']))
-						echo $_SESSION['blad'];
-					?>
+	<div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="filmy.php">Filmy</a>
+        <a href="#">Repertuar</a>
+        <a href="#">Kup</a>
+        <a href="#">Zarezerwuj</a>
+    </div>
 
-				</div>
-				<div class="option">
-					<a href="rejestracja.php" >Rejestracja</a>
-				</div>
-				<div style="clear: both;"/>
-			</div>
-		</div>
-		<div id="content">
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis tempus sem vel elit varius, quis eleifend lorem sodales. 
-		Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec sollicitudin orci at arcu sodales, ac rutrum ex semper.
-		Fusce feugiat sollicitudin libero nec finibus. Phasellus ullamcorper nisi nec ante dapibus, nec pellentesque neque consequat. 
-		Pellentesque mi metus, tincidunt consectetur tellus sed, ultrices lacinia sem. Vestibulum in ex ac tortor porttitor dictum. 
-		Nulla porttitor non urna in tempor. Aenean ut mattis velit, vitae vestibulum leo. Proin aliquam quam vel justo lacinia, a tristique velit finibus. 
-		Fusce ultricies eget diam eget dictum. <br><br>
-
-		Quisque ornare odio blandit, laoreet lacus ut, pulvinar lacus. Nullam sit amet tortor eget augue pulvinar dignissim. 
-		Duis tempor felis a molestie finibus. Curabitur a hendrerit felis. Etiam consequat ultrices condimentum. In imperdiet volutpat auctor.
-		Vivamus convallis malesuada efficitur. Sed ullamcorper, sem sit amet finibus aliquet, quam nisi hendrerit justo, at volutpat velit neque sit
-		amet urna. Nullam in mi felis. Phasellus sed nisi et lacus semper ullamcorper. Nullam vel enim varius mauris maximus luctus sed in leo. 
-		Phasellus luctus enim sed massa tincidunt dignissim. Sed blandit augue id turpis pretium molestie. Donec lacinia urna quis sapien faucibus,
-		nec blandit turpis lacinia. Vivamus malesuada vulputate porttitor.<br><br>
-
-		Morbi nibh est, facilisis eget nisi ac, euismod varius mi. Class aptent taciti sociosqu ad litora torquent per conubia nostra, 
-		per inceptos himenaeos. Morbi in est eget sem porta hendrerit. Vivamus nisi tellus, vestibulum vel erat id, bibendum ornare purus.
-		Nulla venenatis hendrerit nisi sed lacinia. Suspendisse mattis sagittis nulla nec dignissim. Sed eget vulputate dui, a molestie nibh.
-		Quisque condimentum velit eget aliquam ornare. Cras accumsan finibus tortor, id varius nisl gravida sed. In gravida risus vel nunc pulvinar 
-		sollicitudin. Donec gravida non elit consequat egestas. Aliquam erat volutpat. Quisque vestibulum diam a massa tempus porta sed et magna.
-		Vestibulum sodales ante ligula, at vestibulum purus tempus et. Praesent non condimentum sem. Maecenas ornare sem ut orci interdum, at commodo 
-		<br><br>
-		</div>
-		<div id="footer">
-		
-		</div>
+	<div  id="menu">
+		<ul>
+			<li><a href="#news"><span color onclick="openNav()">Menu</span></a></li>
+			<li><a class="active" href="index.php">Home</a></li>
+			<li><a href="kontakt.php">Kontakt</a></li>
+			<li><a onclick="document.getElementById('id01').style.display='block'">Logowanie</a></li>
+			<li><a href="rejestracja.php">Rejestracja</a></li>
+			<li><a href="konto.php">Moje Konto</a></li>
+			<li>
+				<?php if(isset($_SESSION['zalogowany']))
+						echo '<a href="logout.php">Wyloguj</a>';
+				?>
+			</li>
+		</ul>
 	</div>
+
+    <div id="id01" class="modal">
+        <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;
+		</span>
+            <form method="post" class="modal-content animate" action="zaloguj.php">
+				<div class="imgcontainer">
+					<img src="images/avatar_2.png"  height="25%" width="25%" alt="Avatar" class="avatar">
+				</div>
+			
+				<div class="container">
+					<label for="uname"><b>Login</b></label>
+					<input type="text" placeholder="Wprowadź Login" name="login" required>
+					<label for="psw"><b>Hasło</b></label>
+					<input type="password" placeholder="Wprowadź Hasło" name="haslo" required>
+			
+					<button type="submit">Zaloguj</button>
+				</div>
+			
+				<div class="container" style="background-color:#f1f1f1">
+					<button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Anuluj</button>
+				</div>
+            </form>
+		  </div>
+	  
+	  	<div id="main">
+			<div class="centered">
+				<h1>Kino ODRA</h1>
+			</div>
+		</div>
 
 </body>
 </html>

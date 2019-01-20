@@ -1,0 +1,48 @@
+body
+{
+    background-color: black;
+}
+
+a{
+    text-decoration: none;
+}
+
+#wrapper{
+    width: 100%;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    color: white;
+    justify-content: center;
+    display: flex;
+    position: fixed;
+}
+
+#content{
+    width: 30%;
+    border: 1px solid white;
+    padding: 30px;
+    text-align: left;
+}
+
+.error
+{
+	color: red;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+table, td, th {
+    border: 1px solid white;
+}
+  
+table {
+    border-collapse: collapse;
+}
+  
+th {
+    text-align: left;
+}
+
+
