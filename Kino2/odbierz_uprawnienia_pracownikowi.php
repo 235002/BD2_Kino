@@ -13,7 +13,7 @@
 		}
 		else
 		{	
-			$rezultat = $polaczenie->query("SELECT ID_film, tytul FROM film ");
+			$rezultat = $polaczenie->query("SELECT * FROM osoba WHERE ID_rodzajkonta = 2");
 			if (!$rezultat) throw new Exception($polaczenie->error);
 		}
 	}
@@ -27,7 +27,7 @@
 <!DOCTYPE HTML>
 <html lang="pl">
 <head>
-<meta charset="utf-8"/>
+	<meta charset="utf-8"/>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 	<title>Kino ODRA</title>
 	<meta name="description" content="Kino ODRA - spotkajmy się w kinie!" />
@@ -35,10 +35,10 @@
 	<link rel="stylesheet" href="CSS/mainStyle.css" type="text/css"> 
 	<link rel="stylesheet" href="CSS/styles.css" type="text/css"> 
 	<link rel="stylesheet" href="CSS/style.css" type="text/css"> 
-  	<script src ="scripts/jQuery.js"></script>
-  	<script src ="scripts/script.js"></script>
-	<link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,900&amp;subset=latin-ext" rel="stylesheet"/>	
-</head>
+    <script src ="scripts/jQuery.js"></script>
+    <script src ="scripts/script.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,900&amp;subset=latin-ext" rel="stylesheet"/>
+</head>	
 <body>
 
 	<div id="mySidenav" class="sidenav">
@@ -87,48 +87,38 @@
 				</div>
             </form>
 		  </div>
-
-	<div id="wrapper">
-		<div id="content">
-			<form action="repertuar_dodawanie.php" method="post">
-				Dodawanie nowego seansu do bazy. <br/>
+	  
+	  	<div id="wrapper">
+			<div id="content">
+				Usuwanie pracownika<br/>
 				<?php 
-					if(isset($_SESSION['dodawanie_udane']) && $_SESSION['dodawanie_udane'] == true)
+					if(isset($_SESSION['e_uprawnienia']))
 					{
-						echo "Udało się dodać nowy film do bazy danych. <br/>";
-						unset($_SESSION['dodawanie_udane']);
-					}
-
-					if(isset($_SESSION['dodawanie_udane']) && $_SESSION['dodawanie_udane'] == false)
-					{
-						echo  "Nie udało się zapisać danych do bazy danych! <br/>";
-						unset($_SESSION['dodawanie_udane']);
+						echo  $_SESSION['e_uprawnienia'];
+						unset($_SESSION['e_uprawnienia']);
 					}
 				?>
-				Wybierz film: 
-							<select name="ID_film">						
-								<option value="0">Wybierz film</option>
-								<?php
-									while($row = $rezultat->fetch_assoc())
-									{
-									?>
-									<option value = "<?php echo($row['ID_film'])?>" >
-										<?php echo($row['tytul'])?>
-									</option>
-									<?php
-									}               
-								?>
-							</select><br />
-				Wybierz godzinę: <select name="godzina">
-									<option value="09:00:00">09:00</option>
-									<option value="13:00:00">13:00</option>
-									<option value="17:00:00">17:00</option>
-									<option value="21:00:00">21:00</option>
-								</select><br/>
-				Wybierz datę: <input type="date" name="data" /> <br />
-				<input type="submit"/><br/>
-			</form>
+				<form method="post" action="pracownik_uprawniena.php">
+
+					Wybierz pracownika do odebrania uprawnień: 
+					<select name="ID_osoba">						
+						<option value="0">Wybierz pracownika</option>
+							<?php
+							while($row = $rezultat->fetch_assoc())
+							{
+							?>
+							<option value = "<?php echo($row['ID_osoba'])?>" >
+								<?php echo($row['imie']."  ".$row['nazwisko']."  ".$row['login']);?>
+							</option>
+							<?php
+							}              
+							?>
+					</select><br/>
+					Liczba punktow pracownika: <input type="number" name="liczba_pkt" value="<?php echo $row['liczba_punktow'];?>"/><br/>
+
+					<input type="submit" value="Odbierz uprawnienia"/>
+				</form>
+			</div>
 		</div>
-	</div>
 </body>
 </html>

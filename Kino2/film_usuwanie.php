@@ -2,9 +2,9 @@
 
 	session_start();
 	
-	if (!isset($_POST['ID_film']))
+	if (!isset($_POST['ID_film']) || $_POST['ID_film'] == 0)
 	{
-		header('Location: dodaj_seans.php');
+		header('Location: usun_film.php');
 		exit();
 	}
 	
@@ -46,9 +46,14 @@
 
 				$rezultat->free_result();
 				$polaczenie->close();
+				$_SESSION['usuwanie_prawidlowe'] = "Prawidłowo usunięto film. <br/>" ;
 				header("Location: usun_film.php");
 				exit();
 
+			}
+			else
+			{
+				$_SESSION['usuwanie_nieprawidlowe'] = "Nie można usunąć filmu. <br/>" ;
 			}
 			$polaczenie->close();
 		}

@@ -77,12 +77,15 @@
 				}	
 				$rezultat->free_result();
 				$polaczenie->close();
+				$_SESSION['dodawanie_udane'] = true;
 				header("Location: dodaj_seans.php");
 				exit();
 			}
 			else 
 			{
+				$_SESSION['dodawanie_udane'] = false;
 				echo "Nie udało się zapisać danych do bazy danych! "."<br/>";
+				header("Location: dodaj_seans.php");
 			}
 			$polaczenie->close();
 		}

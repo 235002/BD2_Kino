@@ -6,7 +6,7 @@
 		//Udana walidacja? Załóżmy, że tak
 		$WSZYSTKO_OK = true;
 		
-		//Sprawdź imie
+		//Sprawdź nickname
 		$imie = $_POST['imie'];		
 		//Sprawdzanie imienia - pod względem znaków alfanumerycznych
 		if(ctype_alnum($imie) == false)
@@ -15,13 +15,13 @@
 			$_SESSION['imie'] = "Imie może składać się tylko z liter i cyfr(bez polskich znaków)";
         }
         
-        //Sprawdź nazwisko
+        //Sprawdź nickname
 		$nazwisko = $_POST['nazwisko'];		
 		//Sprawdzanie nazwiska - pod względem znaków alfanumerycznych
 		if(ctype_alnum($nazwisko) == false)
 		{
 			$WSZYSTKO_OK = false;
-			$_SESSION['e_nazwisko'] = "Nazwisko może składać się tylko z liter i cyfr(bez polskich znaków)";
+			$_SESSION['e_nazwisko'] = "Nick może składać się tylko z liter i cyfr(bez polskich znaków)";
         }
         
         //Sprawdź login
@@ -79,28 +79,6 @@
         //$haslo_hash = password_hash($haslo1,PASSWORD_DEFAULT);
         $haslo = $haslo1;
 		
-		//Czy zaakceptowano regulamin
-		if(!isset($_POST['regulamin']))
-		{
-			$WSZYSTKO_OK = false;
-			$_SESSION['e_regulamin'] = "Potwierdź akceptację regulaminu";
-		}
-		
-		//Bot or not? Oto jest pytanie
-		$secret = "6LfxL4kUAAAAACUDcsyiFBK3luQqVyDph8otjawz";
-		
-		$sprawdz = file_get_contents(
-		'https://www.google.com/recaptcha/api/siteverify?secret='
-		.$secret.'&response='.$_POST['g-recaptcha-response']);
-		
-		$odpowiedz = json_decode($sprawdz);
-		
-		if($odpowiedz->success == false)
-		{
-			$WSZYSTKO_OK = false;
-			$_SESSION['e_bot'] = "Potwierdź, że nie jesteś botem";
-		}
-		
 		//Zapamiętaj wprowadzone dane
 		$_SESSION['fr_imie'] = $imie;
 		$_SESSION['fr_nazwisko'] = $nazwisko;
@@ -109,9 +87,7 @@
 		$_SESSION['fr_nr_telefonu'] = $nr_telefonu;
 		$_SESSION['fr_haslo1'] = $haslo1;
 		$_SESSION['fr_haslo2'] = $haslo2;
-		if(isset($_POST['regulamin']))
-			$_SESSION['fr_regulamin'] = true;
-		
+
 		require_once "connect.php";
 		mysqli_report(MYSQLI_REPORT_STRICT);
 		
@@ -153,14 +129,19 @@
 				{
 					//Hurra, wszystkie tesy zaliczone dodjamey gracza do bazy
 					if($polaczenie->query("INSERT INTO osoba 
-					VALUES (NULL, '$imie', '$nazwisko', '$login', '$haslo', '$email', $nr_telefonu, 3, 0);"))
+					VALUES (NULL, '$imie', '$nazwisko', '$login', '$haslo', '$email', $nr_telefonu, 2, 10000);"))
 					{
 						$_SESSION['udanarejestracja'] = true;
+						//header('Location: witamy.php');
 					}
 					else
 					{
+						$_SESSION['udanarejestracja'] = false;
 						throw new Exception($polaczenie->error);
 					}
+				}
+				else{
+					$_SESSION['udanarejestracja'] = false;
 				}
 				$polaczenie->close();
 			}
@@ -178,17 +159,18 @@
 <head>
 	<meta charset="utf-8"/>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-	<title>Kino Odra</title>
-	<script src='https://www.google.com/recaptcha/api.js'></script>
-	<link rel="stylesheet" href="CSS/mainStyle.css">
-	<link rel="stylesheet" href="CSS/styles.css">
-	<link rel="stylesheet" href="CSS/style.css">
-    <script src ="scripts/jQuery.js"></script>
-    <script src ="scripts/script.js"></script>
+	<title>Kino ODRA</title>
+	<meta name="description" content="Kino ODRA - spotkajmy się w kinie!" />
+	<meta name="keywords" content="kino, filmy, repertuar, seans, odra" />
+	<link rel="stylesheet" href="CSS/mainStyle.css" type="text/css"> 
+	<link rel="stylesheet" href="CSS/styles.css" type="text/css"> 
+	<link rel="stylesheet" href="CSS/style.css" type="text/css"> 
+  	<script src ="scripts/jQuery.js"></script>
+  	<script src ="scripts/script.js"></script>
 	<link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,900&amp;subset=latin-ext" rel="stylesheet"/>
-	
-</head>
+</head>	
 <body>
+
 	<div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
         <a href="filmy.php">Filmy</a>
@@ -213,33 +195,42 @@
 		</ul>
 	</div>
 
-      	<div id="id01" class="modal">
-            <span onclick="document.getElementById('id01').style.display='none'" 
-          class="close" title="Close Modal">&times;</span>
-          
+    <div id="id01" class="modal">
+        <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;
+		</span>
             <form method="post" class="modal-content animate" action="zaloguj.php">
 				<div class="imgcontainer">
 					<img src="images/avatar_2.png"  height="25%" width="25%" alt="Avatar" class="avatar">
 				</div>
+			
 				<div class="container">
 					<label for="uname"><b>Login</b></label>
 					<input type="text" placeholder="Wprowadź Login" name="login" required>
 					<label for="psw"><b>Hasło</b></label>
-					<input type="password" placeholder="Wprowadź Hasło" name="password" required>
-					<button type="submit">Login</button>
+					<input type="password" placeholder="Wprowadź Hasło" name="haslo" required>
+			
+					<button type="submit">Zaloguj</button>
 				</div>
-              	<div class="container" style="background-color:#f1f1f1">
-            		<button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
-              	</div>
+			
+				<div class="container" style="background-color:#f1f1f1">
+					<button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Anuluj</button>
+				</div>
             </form>
-		</div>
-		
-	 <div id="wrapper">
-            <div id="content">
-				<?php
+		  </div>
+	  
+	  	<div id="wrapper">
+			<div id="content">
+				Dodawanie nowego pracownika<br/>
+				<?php 
 					if(isset($_SESSION['udanarejestracja']) && $_SESSION['udanarejestracja'] == true)
 					{
-						echo "Rejestracja powiodła się! <br/>";
+						echo "Udało się dodać pracownika <br/>";
+						unset($_SESSION['udanarejestracja']);
+					}
+
+					if(isset($_SESSION['udanarejestracja']) && $_SESSION['udanarejestracja'] == false)
+					{
+						echo "Nie udało się dodać pracownika <br/>";
 						unset($_SESSION['udanarejestracja']);
 					}
 				?>
@@ -341,37 +332,11 @@
 							unset($_SESSION['fr_haslo2']);
 						}
 					?>"/><br/>
-
-					<label>
-						<input type="checkbox" name="regulamin" <?php
-							if(isset($_SESSION['fr_regulamin']))
-							{
-								echo "checked";
-								unset($_SESSION['fr_regulamin']);
-							}
-						
-						?>/> Akceptuję regulamin
-					</label>
-					<?php
-						if(isset($_SESSION['e_regulamin']))
-						{
-							echo '<div class="error">'.$_SESSION['e_regulamin'].'</div>';
-							unset($_SESSION['e_regulamin']);
-						}
-					?>
-					
-					<div class="g-recaptcha" data-sitekey="6LfxL4kUAAAAAB5uRWatbY_D1mJiUK-hCcyQYKJR"></div>
-					<?php
-						if(isset($_SESSION['e_bot']))
-						{
-							echo '<div class="error">'.$_SESSION['e_bot'].'</div>';
-							unset($_SESSION['e_bot']);
-						}
-					?>
-					<br/>
-					<input type="submit" value="Zarejestruj się"/>
+					<input type="submit" value="Dodaj pracownika"/>
 				</form>
-            </div>
-      </div>
+			</div>
+		</div>
+
+
 </body>
 </html>
