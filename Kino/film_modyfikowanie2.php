@@ -57,12 +57,6 @@
 			$WSZYSTKO_OK = false;
 			$_SESSION['e_gatunek'] = "Gatunek musi mieć od 1 do 255 znaków.";
 		}
-		//Sprawdzanie gatunku - pod względem znaków alfanumerycznych
-		if(ctype_alnum(trim(str_replace(' ','',$gatunek))) == false)
-		{
-			$WSZYSTKO_OK = false;
-			$_SESSION['e_gatunek'] = "Gatunek może składać się tylko z liter i cyfr(bez polskich znaków)";
-		}
 		
 		//Sprawdzenie daty premiery
 		$premiera = date('Y-m-d',strtotime($_POST['premiera']));

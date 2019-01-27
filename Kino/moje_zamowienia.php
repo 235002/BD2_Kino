@@ -1,79 +1,41 @@
 <?php
 	session_start();
-
-	if(isset($_POST['login']) && isset($_POST['liczba_punktow']))
+	
+	if(isset($_SESSION['zalogowany'])&&($_SESSION['zalogowany']==true))
 	{
-		//Walidacja udana
-		$WSZYSTKO_OK = true;
-
-		//Walidacja loginu
-		$login = $_POST['login'];
-		$login = strval($login);
-		if($login == "" || $login == NULL)
-		{
-			$WSZYSTKO_OK = false;
-			$_SESSION['e_login'] = "Podany login jest nie poprawny. ";
-		}
-
-		$liczba_punktow = $_POST['liczba_punktow'];
-		if($liczba_punktow <= 0)
-		{
-			$WSZYSTKO_OK = false;
-			$_SESSION['e_punkty'] = "Liczba punktów musi być większa od zera. ";
-		}
-
+		$ID_osoba = $_SESSION['ID_osoba'];
 		require_once "connect.php";
 		mysqli_report(MYSQLI_REPORT_STRICT);
-
-		try
-		{
-			$polaczenie = new mysqli($host, $db_user, $db_password, $db_name);
-			
+		  
+		try{
+			$polaczenie = new  mysqli($host, $db_user, $db_password, $db_name);
 			if ($polaczenie->connect_errno!=0)
-			{
-				throw new Exception(mysqli_connect_errno());
-			}
-			else
-			{
-				//Czy takie konto istnieje
-				$rezultat = $polaczenie->query("SELECT * FROM osoba WHERE `login` = '$login'");
-
-				$wynik = $rezultat->fetch_assoc();
-				$liczba_punktow += $wynik['liczba_punktow'];
-				
-				if(!$rezultat) throw new Exception($polaczenie->error);
-				
-				$ile_takich_loginow = $rezultat->num_rows;
-				if($ile_takich_loginow <= 0)
 				{
-					$WSZYSTKO_OK = false;
-					$_SESSION['e_login'] = "Podanego loginu nie ma w bazie";
+					throw new Exception(mysqli_connect_errno());
 				}
-
-				if($WSZYSTKO_OK == true)
+				else
 				{
-					//Hurra, wszystkie tesy zaliczone dodjamey gracza do bazy
-					if($polaczenie->query("UPDATE osoba SET liczba_punktow = $liczba_punktow WHERE login = '$login'"))
-					{
-						$_SESSION['dodanie'] = "Udało się doładować konto. ";
-					}
-					else
-					{
-						$_SESSION['dodanie'] = "Nie udało się doładować konta. ";
-						throw new Exception($polaczenie->error);
-					}
+					$rezultat = $polaczenie->query("SELECT 	zamowienie.ID_zamowienie, zamowienie.status_zamowienia,
+															zamowienie.liczba_biletow, zamowienie.cena_zamowienia, 
+															zamowienie.data_zamowienia, osoba.imie, osoba.nazwisko,
+															osoba.login, repertuar.godzina, repertuar.data, film.tytul
+													FROM zamowienie 
+													JOIN osoba ON zamowienie.ID_osoba = osoba.ID_osoba
+													JOIN bilet ON bilet.ID_zamowienie = zamowienie.ID_zamowienie
+													JOIN repertuar ON repertuar.ID_repertuar = bilet.ID_repertuar
+													JOIN film ON repertuar.ID_film = film.ID_film
+													WHERE osoba.ID_osoba = $ID_osoba 
+													GROUP BY ID_zamowienie;");
+					if(!$rezultat) throw new Exception($polczenie->error);
+					$polaczenie->close();
 				}
-				$polaczenie->close();
-			}
-		}
-		catch(Exception $e)
-		{
+			
+		}catch(Exception $e){
 			echo '<span style="color: red;"> Błąd serwera! Przepraszamy za niedogodności i prosimy o rejestrację w innym terminie!</span>';
 			echo '<br/>Informacja developerska:'.$e;
 		}
-	}	
+	}
 ?>
-
 <!DOCTYPE HTML>
 <html lang="pl">
 <head>
@@ -139,43 +101,37 @@
 		  </div>
 	  
 	  	<div id="wrapper">
-			<div id="content">
-				Doładuj punkty dla konta:<br/>
-				<?php 
-					if(isset($_SESSION['dodanie']))
+			<table id="customers">
+				<tr>
+					<th>ID Zamówienia</th>
+					<th>Imię</th>
+					<th>Nazwisko</th>
+					<th>Status zamówienia</th>
+					<th>Liczba biletów</th>
+					<th>Cena Zamówienia</th>
+					<th>Data zamówienia</th>
+					<th>Tytuł filmu</th>
+					<th>Data seansu</th>
+					<th>Godzina seansu</th>
+				</tr>
+				<?php
+					while($row = $rezultat->fetch_assoc())
 					{
-						echo  $_SESSION['dodanie'];
-						unset($_SESSION['dodanie']);
-					}
-
-					if(isset($_SESSION['dodanie']))
-					{
-						echo  $_SESSION['dodanie'];
-						unset($_SESSION['dodanie']);
+						echo "<tr>";
+						echo "<td>".$row['ID_zamowienie']."</td>";
+						echo "<td>".$row['imie']."</td>";
+						echo "<td>".$row['nazwisko']."</td>";
+						echo "<td>".$row['status_zamowienia']."</td>";
+						echo "<td>".$row['liczba_biletow']."</td>";
+						echo "<td>".$row['cena_zamowienia']."</td>";
+						echo "<td>".$row['data_zamowienia']."</td>";
+						echo "<td>".$row['tytul']."</td>";
+						echo "<td>".$row['data']."</td>";
+						echo "<td>".$row['godzina']."</td>";
+						echo "</tr>";
 					}
 				?>
-
-				<form method="post">
-					Login doładowywanego konta: <input type="text" name="login"/> <br/>
-					<?php
-						if(isset($_SESSION['e_login']))
-						{
-							echo '<div class="error">'.$_SESSION['e_login'].'</div>';
-							unset($_SESSION['e_login']);
-						}
-					?>
-					Liczba punktów do doładowania (1 punkt = 1 złoty): <input type="number" name="liczba_punktow"/>
-					<?php
-						if(isset($_SESSION['e_punkty']))
-						{
-							echo '<div class="error">'.$_SESSION['e_punkty'].'</div>';
-							unset($_SESSION['e_punkty']);
-						}
-					?>
-					<input type="submit" value="Doładuj konto"/>
-				</form>
-			</div>
+			</table>
 		</div>
-
 </body>
 </html>

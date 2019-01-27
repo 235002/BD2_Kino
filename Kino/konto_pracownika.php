@@ -30,8 +30,8 @@
 
 <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="#">Filmy</a>
-        <a href="#">Repertuar</a>
+        <a href="filmy.php">Filmy</a>
+        <a href="seanse.php">Repertuar</a>
         <a href="#">Kup</a>
         <a href="#">Zarezerwuj</a>
     </div>
@@ -89,8 +89,10 @@
 
 				<table>
 					<th>Operacje możliwe do wykonania</th>
+					<tr><td><a href="moje_zamowienia.php" style="text-decoration: none; color: white;">Moje Zamówienia</a></td></tr>
+					<tr><td><a href="moje_bilety.php" style="text-decoration: none; color: white;">Moje Bilety</a></td></tr>
 					<tr><td><a href="doladuj_punkty.php" style="text-decoration: none; color: white;">Doładuj punkty</a></td></tr>
-					<tr><td><a href="#" style="text-decoration: none; color: white;">Obsługa rezewacji</a></td></tr><tr>
+					<tr><td><a href="rezerwacje.php" style="text-decoration: none; color: white;">Obsługa rezewacji</a></td></tr><tr>
 				</table>
 			</div>
 		</div>

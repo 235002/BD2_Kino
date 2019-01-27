@@ -30,10 +30,8 @@
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<title>Kino ODRA</title>
-	
 	<meta name="description" content="Kino ODRA - spotkajmy się w kinie!" />
 	<meta name="keywords" content="kino, filmy, repertuar, seans, odra" />
-
 	<link rel="stylesheet" href="CSS/mainStyle.css" type="text/css"> 
 	<link rel="stylesheet" href="CSS/style.css" type="text/css"> 
     <script src ="scripts/jQuery.js"></script>
@@ -44,39 +42,27 @@
 
 	<div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="#">Filmy</a>
-        <a href="#">Repertuar</a>
+        <a href="filmy.php">Filmy</a>
+        <a href="seanse.php">Repertuar</a>
         <a href="#">Kup</a>
         <a href="#">Zarezerwuj</a>
     </div>
 
 	<div  id="menu">
-		<ul >
-			<li>
-				<a href="#news"><span color onclick="openNav()">Menu</span></a>
-			</li>
-			<li>
-				<a class="active" href="index.php">Home</a>
-			</li>
-			<li>
-				<a href="kontakt.php">Kontakt</a>
-			</li>
-			<li>
-				<a onclick="document.getElementById('id01').style.display='block'">Logowanie</a>
-			</li>
-			<li>
-				<a href="rejestracja.php">Rejestracja</a>
-			</li>
-			<li>
-				<a href="konto.php">Moje Konto</a>
-			</li>
+		<ul>
+			<li><a href="#news"><span color onclick="openNav()">Menu</span></a></li>
+			<li><a class="active" href="index.php">Home</a></li>
+			<li><a href="kontakt.php">Kontakt</a></li>
+			<li><a onclick="document.getElementById('id01').style.display='block'">Logowanie</a></li>
+			<li><a href="rejestracja.php">Rejestracja</a></li>
+			<li><a href="konto.php">Moje Konto</a></li>
 			<li>
 				<?php if(isset($_SESSION['zalogowany']))
 						echo '<a href="logout.php">Wyloguj</a>';
 				?>
 			</li>
 		</ul>
-    </div>
+	</div>
 
     <div id="id01" class="modal">
         <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;
@@ -91,7 +77,6 @@
 					<input type="text" placeholder="Wprowadź Login" name="login" required>
 					<label for="psw"><b>Hasło</b></label>
 					<input type="password" placeholder="Wprowadź Hasło" name="haslo" required>
-			
 					<button type="submit">Zaloguj</button>
 				</div>
 			

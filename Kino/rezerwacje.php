@@ -1,33 +1,50 @@
 <?php
 	session_start();
-	mysqli_report(MYSQLI_REPORT_STRICT);
+	mysqli_report(MYSQLI_REPORT_STRICT);		
 	
 	try
 	{
 		require_once "connect.php";	
 		$polaczenie = @new mysqli($host,$db_user,$db_password,$db_name);
-	
+		
 		if ($polaczenie->connect_errno!=0)	
 		{
 			throw new Exception(mysqli_connect_errno());
 		}
 		else
 		{	
-			$rezultat = $polaczenie->query("SELECT ID_film, tytul FROM film ");
+			$rezultat = $polaczenie->query("SELECT 	zamowienie.ID_zamowienie, zamowienie.status_zamowienia,
+												   	zamowienie.liczba_biletow, zamowienie.cena_zamowienia, 
+													zamowienie.data_zamowienia, osoba.imie, osoba.nazwisko,
+													osoba.login, repertuar.godzina, repertuar.data, film.tytul
+											FROM zamowienie 
+											JOIN osoba ON zamowienie.ID_osoba = osoba.ID_osoba
+											JOIN bilet ON bilet.ID_zamowienie = zamowienie.ID_zamowienie
+											JOIN repertuar ON repertuar.ID_repertuar = bilet.ID_repertuar
+											JOIN film ON repertuar.ID_film = film.ID_film
+											WHERE 1;");
 			if (!$rezultat) throw new Exception($polaczenie->error);
+
+			if(isset($_POST['rezerwacja']))
+			{
+				$ID_zamowienia = $_POST['rezerwacja'];
+				$rezultat2 = $polaczenie->query("UPDATE zamowienie SET status_zamowienia = 'zakupione' WHERE ID_zamowienie = $ID_zamowienia");
+				if (!$rezultat2) throw new Exception($polaczenie->error);
+				header("Refresh:0");
+			}
 		}
 	}
 	catch(Exception $e)
 	{
 		echo '<span style="color:red;">Błąd serwera! Przepraszamy za niedogodności i prosimy o rejestrację w innym terminie!</span>';
 		echo '<br/>Informacja developerska: '.$e;
-	}	
+	}
 ?>
 
 <!DOCTYPE HTML>
 <html lang="pl">
 <head>
-<meta charset="utf-8"/>
+	<meta charset="utf-8"/>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 	<title>Kino ODRA</title>
 	<meta name="description" content="Kino ODRA - spotkajmy się w kinie!" />
@@ -35,10 +52,10 @@
 	<link rel="stylesheet" href="CSS/mainStyle.css" type="text/css"> 
 	<link rel="stylesheet" href="CSS/styles.css" type="text/css"> 
 	<link rel="stylesheet" href="CSS/style.css" type="text/css"> 
-  	<script src ="scripts/jQuery.js"></script>
-  	<script src ="scripts/script.js"></script>
-	<link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,900&amp;subset=latin-ext" rel="stylesheet"/>	
-</head>
+    <script src ="scripts/jQuery.js"></script>
+    <script src ="scripts/script.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,900&amp;subset=latin-ext" rel="stylesheet"/>
+</head>	
 <body>
 
 	<div id="mySidenav" class="sidenav">
@@ -87,48 +104,46 @@
 				</div>
             </form>
 		  </div>
-
+	  
 	<div id="wrapper">
-		<div id="content">
-			<form action="repertuar_dodawanie.php" method="post">
-				Dodawanie nowego seansu do bazy. <br/>
-				<?php 
-					if(isset($_SESSION['dodawanie_udane']) && $_SESSION['dodawanie_udane'] == true)
+		<form method="post" >
+			<input type="submit" value="Obsłuż rezerwację" style="text-align: rigth;"/>
+			<table id="customers">
+				<tr>
+					<th>ID Zamówienia</th>
+					<th>Imię</th>
+					<th>Nazwisko</th>
+					<th>Login</th>
+					<th>Status zamówienia</th>
+					<th>Liczba biletów</th>
+					<th>Cena Zamówienia</th>
+					<th>Data zamówienia</th>
+					<th>Tytuł filmu</th>
+					<th>Data seansu</th>
+					<th>Godzina seansu</th>
+					<th>Obsłuż rezerwację</th>
+				</tr>
+				<?php
+					while($row = $rezultat->fetch_assoc())
 					{
-						echo "Udało się dodać nowy film do bazy danych. <br/>";
-						unset($_SESSION['dodawanie_udane']);
-					}
-
-					if(isset($_SESSION['dodawanie_udane']) && $_SESSION['dodawanie_udane'] == false)
-					{
-						echo  "Nie udało się zapisać danych do bazy danych! <br/>";
-						unset($_SESSION['dodawanie_udane']);
+						echo "<tr>";
+						echo "<td>".$row['ID_zamowienie']."</td>";
+						echo "<td>".$row['imie']."</td>";
+						echo "<td>".$row['nazwisko']."</td>";
+						echo "<td>".$row['login']."</td>";
+						echo "<td>".$row['status_zamowienia']."</td>";
+						echo "<td>".$row['liczba_biletow']."</td>";
+						echo "<td>".$row['cena_zamowienia']."</td>";
+						echo "<td>".$row['data_zamowienia']."</td>";
+						echo "<td>".$row['tytul']."</td>";
+						echo "<td>".$row['data']."</td>";
+						echo "<td>".$row['godzina']."</td>";
+						echo '<td><input type="radio" name="rezerwacja" value="'.$row['ID_zamowienie'].'"/></td>';
+						echo "</tr>";
 					}
 				?>
-				Wybierz film: 
-							<select name="ID_film">						
-								<option value="0">Wybierz film</option>
-								<?php
-									while($row = $rezultat->fetch_assoc())
-									{
-									?>
-									<option value = "<?php echo($row['ID_film'])?>" >
-										<?php echo($row['tytul'])?>
-									</option>
-									<?php
-									}               
-								?>
-							</select><br />
-				Wybierz godzinę: <select name="godzina">
-									<option value="09:00:00">09:00</option>
-									<option value="13:00:00">13:00</option>
-									<option value="17:00:00">17:00</option>
-									<option value="21:00:00">21:00</option>
-								</select><br/>
-				Wybierz datę: <input type="date" name="data" /> <br />
-				<input type="submit"/><br/>
-			</form>
-		</div>
+			</table>
+		</form>
 	</div>
 </body>
 </html>

@@ -9,14 +9,11 @@ a{
 
 #wrapper{
     width: 100%;
-    padding-top: 50px;
     padding-bottom: 50px;
     margin-top: 40px;
     margin-bottom: 40px;
-    color: white;
     justify-content: center;
     display: flex;
-    position: fixed;
 }
 
 #content{
@@ -24,6 +21,48 @@ a{
     border: 1px solid white;
     padding: 30px;
     text-align: left;
+    color: white;
+}
+
+#customers {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  transition: margin-left .5s;
+  padding: 20px;
+  background-color: white;
+  margin: 1% 5% 1% 5%;
+}
+
+#customers td, #customers th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#customers tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers tr:hover {background-color: #ddd;}
+
+#customers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4CAF50;
+  color: white;
+}
+
+#movies{
+  margin-top: 1fv;
+  color:white;
+}
+
+#btt{
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width:100%;
 }
 
 .error

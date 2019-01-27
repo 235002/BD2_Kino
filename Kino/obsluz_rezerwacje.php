@@ -52,31 +52,26 @@
     <div id="id01" class="modal">
         <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;
 		</span>
-            <form method="post" class="modal-content animate" action="zaloguj.php">
-				<div class="imgcontainer">
-					<img src="images/avatar_2.png"  height="25%" width="25%" alt="Avatar" class="avatar">
-				</div>
-			
-				<div class="container">
-					<label for="uname"><b>Login</b></label>
-					<input type="text" placeholder="Wprowadź Login" name="login" required>
-					<label for="psw"><b>Hasło</b></label>
-					<input type="password" placeholder="Wprowadź Hasło" name="haslo" required>
-			
-					<button type="submit">Zaloguj</button>
-				</div>
-			
-				<div class="container" style="background-color:#f1f1f1">
-					<button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Anuluj</button>
-				</div>
-            </form>
-		  </div>
-	  
-	  	<div id="main">
-			<div class="centered">
-				<h1>Kino ODRA</h1>
+        <form method="post" class="modal-content animate" action="zaloguj.php">
+			<div class="imgcontainer">
+				<img src="images/avatar_2.png"  height="25%" width="25%" alt="Avatar" class="avatar">
 			</div>
-		</div>
+			<div class="container">
+				<label for="uname"><b>Login</b></label>
+				<input type="text" placeholder="Wprowadź Login" name="login" required>
+				<label for="psw"><b>Hasło</b></label>
+				<input type="password" placeholder="Wprowadź Hasło" name="haslo" required>
+				<button type="submit">Zaloguj</button>
+			</div>
+			<div class="container" style="background-color:#f1f1f1">
+				<button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Anuluj</button>
+			</div>
+        </form>
+	</div>
+
+	
+	  
+	  	
 
 </body>
 </html>

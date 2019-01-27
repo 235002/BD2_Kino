@@ -163,20 +163,20 @@
 	<meta charset="utf-8"/>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 	<title>Kino ODRA</title>
-
-	<link rel="stylesheet" href="CSS/mainStyle.css" type="text/css">
+	<meta name="description" content="Kino ODRA - spotkajmy się w kinie!" />
+	<meta name="keywords" content="kino, filmy, repertuar, seans, odra" />
+	<link rel="stylesheet" href="CSS/mainStyle.css" type="text/css"> 
 	<link rel="stylesheet" href="CSS/styles.css" type="text/css"> 
-	<link rel="stylesheet" href="CSS/style.css" type="text/css">
-    <script src ="scripts/jQuery.js"></script>
-    <script src ="scripts/script.js"></script>
+	<link rel="stylesheet" href="CSS/style.css" type="text/css"> 
+  	<script src ="scripts/jQuery.js"></script>
+  	<script src ="scripts/script.js"></script>
 	<link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,900&amp;subset=latin-ext" rel="stylesheet"/>
-	
 </head>
 <body>
 <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="#">Filmy</a>
-        <a href="#">Repertuar</a>
+        <a href="filmy.php">Filmy</a>
+        <a href="seanse.php">Repertuar</a>
         <a href="#">Kup</a>
         <a href="#">Zarezerwuj</a>
     </div>

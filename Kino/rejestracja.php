@@ -6,7 +6,7 @@
 		//Udana walidacja? Załóżmy, że tak
 		$WSZYSTKO_OK = true;
 		
-		//Sprawdź nickname
+		//Sprawdź imie
 		$imie = $_POST['imie'];		
 		//Sprawdzanie imienia - pod względem znaków alfanumerycznych
 		if(ctype_alnum($imie) == false)
@@ -15,13 +15,13 @@
 			$_SESSION['imie'] = "Imie może składać się tylko z liter i cyfr(bez polskich znaków)";
         }
         
-        //Sprawdź nickname
+        //Sprawdź nazwisko
 		$nazwisko = $_POST['nazwisko'];		
 		//Sprawdzanie nazwiska - pod względem znaków alfanumerycznych
 		if(ctype_alnum($nazwisko) == false)
 		{
 			$WSZYSTKO_OK = false;
-			$_SESSION['e_nazwisko'] = "Nick może składać się tylko z liter i cyfr(bez polskich znaków)";
+			$_SESSION['e_nazwisko'] = "Nazwisko może składać się tylko z liter i cyfr(bez polskich znaków)";
         }
         
         //Sprawdź login
@@ -187,81 +187,62 @@
     <script src ="scripts/script.js"></script>
 	<link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,900&amp;subset=latin-ext" rel="stylesheet"/>
 	
-	<style>
-		.error
-		{
-			color: red;
-			margin-top: 10px;
-			margin-bottom: 10px;
-		}
-	</style>
 </head>
-<body><div id="mySidenav" class="sidenav">
+<body>
+	<div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="#">Filmy</a>
-        <a href="#">Repertuar</a>
+        <a href="filmy.php">Filmy</a>
+        <a href="seanse.php">Repertuar</a>
         <a href="#">Kup</a>
         <a href="#">Zarezerwuj</a>
     </div>
 
 	<div  id="menu">
-		<ul >	
-			<li>
-				<a href="#news"><span color onclick="openNav()">Menu</span></a>
-			</li>
-			<li>
-				<a class="active" href="index.php">Home</a>
-			</li>
-			<li>
-				<a href="kontakt.php">Kontakt</a>
-			</li>
-			<li>
-				<a onclick="document.getElementById('id01').style.display='block'">Logowanie</a>
-			</li>
-			<li>
-				<a href="rejestracja.php">Rejestracja</a>
-			</li>
-			<li>
-				<a href="konto.php">Moje Konto</a>
-			</li>
+		<ul>
+			<li><a href="#news"><span color onclick="openNav()">Menu</span></a></li>
+			<li><a class="active" href="index.php">Home</a></li>
+			<li><a href="kontakt.php">Kontakt</a></li>
+			<li><a onclick="document.getElementById('id01').style.display='block'">Logowanie</a></li>
+			<li><a href="rejestracja.php">Rejestracja</a></li>
+			<li><a href="konto.php">Moje Konto</a></li>
 			<li>
 				<?php if(isset($_SESSION['zalogowany']))
 						echo '<a href="logout.php">Wyloguj</a>';
 				?>
 			</li>
 		</ul>
-    </div>
+	</div>
 
       	<div id="id01" class="modal">
             <span onclick="document.getElementById('id01').style.display='none'" 
           class="close" title="Close Modal">&times;</span>
           
-            <!-- Modal Content -->
             <form method="post" class="modal-content animate" action="zaloguj.php">
 				<div class="imgcontainer">
 					<img src="images/avatar_2.png"  height="25%" width="25%" alt="Avatar" class="avatar">
 				</div>
-          
 				<div class="container">
 					<label for="uname"><b>Login</b></label>
 					<input type="text" placeholder="Wprowadź Login" name="login" required>
-			
 					<label for="psw"><b>Hasło</b></label>
 					<input type="password" placeholder="Wprowadź Hasło" name="password" required>
-			
 					<button type="submit">Login</button>
 				</div>
-          
               	<div class="container" style="background-color:#f1f1f1">
             		<button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
               	</div>
             </form>
-        </div>
-	
-	
-      <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
-      <<div id="wrapper">
+		</div>
+		
+	 <div id="wrapper">
             <div id="content">
+				<?php
+					if(isset($_SESSION['udanarejestracja']) && $_SESSION['udanarejestracja'] == true)
+					{
+						echo "Rejestracja powiodła się! <br/>";
+						unset($_SESSION['udanarejestracja']);
+					}
+				?>
 				<form method="post">
 						Imie: <br/> <input type="text" name="imie" value="<?php
 						if(isset($_SESSION['fr_imie']))

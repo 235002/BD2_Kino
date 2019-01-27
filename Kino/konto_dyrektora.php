@@ -30,8 +30,8 @@
 
 <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="#">Filmy</a>
-        <a href="#">Repertuar</a>
+        <a href="filmy.php">Filmy</a>
+        <a href="seanse.php">Repertuar</a>
         <a href="#">Kup</a>
         <a href="#">Zarezerwuj</a>
     </div>
@@ -66,7 +66,6 @@
 					<input type="text" placeholder="Wprowadź Login" name="login" required>
 					<label for="psw"><b>Hasło</b></label>
 					<input type="password" placeholder="Wprowadź Hasło" name="haslo" required>
-			
 					<button type="submit">Zaloguj</button>
 				</div>
 			
@@ -74,7 +73,7 @@
 					<button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Anuluj</button>
 				</div>
             </form>
-          </div>
+        </div>
 
 		<div id="wrapper">
 			<div id="content">

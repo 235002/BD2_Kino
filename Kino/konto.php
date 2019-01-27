@@ -35,8 +35,8 @@
 
 <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="#">Filmy</a>
-        <a href="#">Repertuar</a>
+        <a href="filmy.php">Filmy</a>
+        <a href="seanse.php">Repertuar</a>
         <a href="#">Kup</a>
         <a href="#">Zarezerwuj</a>
     </div>
@@ -57,51 +57,46 @@
 		</ul>
 	</div>
 
-      <!-- Use any element to open the sidenav -->
-      <div id="id01" class="modal">
-            <span onclick="document.getElementById('id01').style.display='none'" 
-          class="close" title="Close Modal">&times;</span>
-          
-			<!-- Modal Content -->
-			
-            <form method="post" class="modal-content animate" action="zaloguj.php">
-				<div class="imgcontainer">
-					<img src="images/avatar_2.png"  height="25%" width="25%" alt="Avatar" class="avatar">
-				</div>
-			
-				<div class="container">
-					<label for="uname"><b>Login</b></label>
-					<input type="text" placeholder="Wprowadź Login" name="login" required>
-					<label for="psw"><b>Hasło</b></label>
-					<input type="password" placeholder="Wprowadź Hasło" name="haslo" required>
-			
-					<button type="submit">Zaloguj</button>
-				<!-- <label>
-					<input type="checkbox" checked="checked" name="remember"> Remember me
-					</label>-->
-				</div>
-			
-				<div class="container" style="background-color:#f1f1f1">
-					<button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Anuluj</button>
-					<!-- <span class="psw">Forgot <a href="#">password?</a></span> -->
-				</div>
-            </form>
-          </div>
+    <div id="id01" class="modal">
+        <span onclick="document.getElementById('id01').style.display='none'" 
+        class="close" title="Close Modal">&times;</span>
+        <form method="post" class="modal-content animate" action="zaloguj.php">
+			<div class="imgcontainer">
+				<img src="images/avatar_2.png"  height="25%" width="25%" alt="Avatar" class="avatar">
+			</div>
+			<div class="container">
+				<label for="uname"><b>Login</b></label>
+				<input type="text" placeholder="Wprowadź Login" name="login" required>
+				<label for="psw"><b>Hasło</b></label>
+				<input type="password" placeholder="Wprowadź Hasło" name="haslo" required>
+				<button type="submit">Zaloguj</button>
+			</div>
+			<div class="container" style="background-color:#f1f1f1">
+				<button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Anuluj</button>
+			</div>
+        </form>
+    </div>
 
 
-		<div id="wrapper">
-			<div id="content">
-				<div class="content">
-					Witaj <?php echo $_SESSION['imie'];?>!<br/>
-					Twoje dane
-					Imie:	<?php echo $_SESSION['imie'];?><br/>
-					Nazwisko:	<?php echo $_SESSION['nazwisko'];?><br/>
-					Login:	<?php echo $_SESSION['login'];?><br/>
-					E-mail:	<?php echo $_SESSION['e-mail'];?><br/>
-					Numer telefonu:	<?php echo $_SESSION['nr_telefonu'];?><br/>
-					Liczba punktów:	<?php echo $_SESSION['liczba_punktow'];?><br/>
-				</div>
-            </div>
-      </div>
+	<div id="wrapper">
+		<div id="content">
+			<div class="content">
+				Witaj <?php echo $_SESSION['imie'];?>!<br/>
+				Twoje dane
+				Imie:	<?php echo $_SESSION['imie'];?><br/>
+				Nazwisko:	<?php echo $_SESSION['nazwisko'];?><br/>
+				Login:	<?php echo $_SESSION['login'];?><br/>
+				E-mail:	<?php echo $_SESSION['e-mail'];?><br/>
+				Numer telefonu:	<?php echo $_SESSION['nr_telefonu'];?><br/>
+				Liczba punktów:	<?php echo $_SESSION['liczba_punktow'];?><br/>
+
+				<table>
+					<th>Operacje możliwe do wykonania</th>
+					<tr><td><a href="moje_zamowienia.php" style="text-decoration: none; color: white;">Moje Zamówienia</a></td></tr>
+					<tr><td><a href="moje_bilety.php" style="text-decoration: none; color: white;">Moje Bilety</a></td></tr>
+				</table>
+			</div>
+        </div>
+    </div>
 </body>
 </html>
