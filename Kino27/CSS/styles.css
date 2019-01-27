@@ -1,4 +1,8 @@
-.messagePanel { border: solid 1px black; width: 55%; height: 55%; }
+.messagePanel { 
+    border: solid 1px black;
+    width: 55%; 
+    height: 55%; 
+}
 
 .seat {
     
@@ -14,7 +18,7 @@
     background-color: green;
 }
 .unavailable {
-    background-color: #000000;
+    background-color: white;
 }
 
 .hovering{

@@ -1,5 +1,3 @@
-
-
 $(function(){
 
     $('#btnSeating').on('click', createseating);
@@ -12,104 +10,81 @@ $(function(){
             this.miejsce = x;
             this.ava=zajete;
         }
-        czy_zajete() {
-            return `${this.aval}`;
-        }
         zmien(x){
             this.ava=x;
         }
     }
    // var xmlhttp = new XMLHttpRequest();
-    
-   
-    var N=3;
-    var cn1=0;
-    var cn2=0;
+   var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+    var myObj = JSON.parse(this.responseText);
+    document.getElementById("demo").innerHTML = myObj.name;
+    }
+    };
+    xmlhttp.open("GET", "demo_file.php", true);
+    xmlhttp.send();
+
+    window.alert('<?php echo json_encode($locliczba2) ?>');
+    var liczba_max= JSON.parse('<?php echo json_encode($locliczba2) ?>');
+    console.log(liczba_max);
+    var licznik=0;
+    var licznik2=0;
     var seatings=[];
     var seatingValue = [];
     var seatingValue2 = [];
     function createseating(){
-     
-    for ( var i = 0; i < 15; i++){   
-        for (var j=0; j<20; j++){
 
-            if(i>10){
-               seatings[(i*20)+j]= new seat_class((i*20)+j,true);
-            }else{
-                seatings[(i*20)+j]= new seat_class((i*20)+j,false);     
-            }
-        }
-    }
-    /*
     for ( var i = 0; i < 15; i++){   
         for (var j=0; j<20; j++){
-            var tmp ="<?php echo $myObj[(i*20)+j]; ?>";
+            //var tmp=JSON.parse('<?php echo json_encode($myObj[(i*20)+j]) ?>');
+            var tmp=false;
             if(tmp==true){
                seatings[(i*20)+j]= new seat_class((i*20)+j,true);
+               licznik=licznik+1;
+               licznik2=licznik2+1;
             }else{
                 seatings[(i*20)+j]= new seat_class((i*20)+j,false);     
             }
         }
     }
-    */
-
-
-
-
-    /* Tutaj jest funkcja alternatywna do tej wyżej do miejsc,
-     jak już będą stany miejsc  w tej tablicy z php myObj
-    for ( var i = 0; i < 15; i++){   
-        for (var j=0; j<20; j++){
-            xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-            var myObj = JSON.parse(this.responseText);
-            
-            if(myObj[(i*20)+j]==true){
-                seatings[(i*20)+j]= new seat_class((i*20)+j,true);
-             }else{
-                 seatings[(i*20)+j]= new seat_class((i*20)+j,false);     
-             }
-            }
-            }
-        }
+ 
+   while(seatingValue.length>0){
+    seatingValue.pop();
     }
-    */    
-     
      for ( var i = 0; i < 15; i++){
        
         for (var j=0; j<20; j++){
             if(seatings[(i*20)+j].ava==true){
                 var seatingStyle = "<div class='seat unavailable'></div>";
-                cn1++;
+                
+   
             }else{
                 
                 var seatingStyle = "<div class='seat available'></div>";
+                
             }
+           
             seatingValue.push(seatingStyle);
+           
     
-             if ( j === 19){
-            console.log("hi");
-             var seatingStyle = "<div class='clearfix'></div>";
-            seatingValue.push(seatingStyle);   
-    
-    
-    
-         }
       }   
     }
-    
+
     $('#messagePanel').html(seatingValue);
-        
+         
            $(function(){
                 $('.seat').on('click',function(){ 
                     if($(this).hasClass( "unavailable" )){
-                        $( this ).addClass( "unavailable" )             
+                        $( this ).addClass( "unavailable" )   
+                                  
                   } else if($(this).hasClass( "selected" )){
                     $( this ).removeClass( "selected" );
-                        N++;
+                    licznik2=licznik2-1;
+
                   }else{                   
                     $( this ).addClass( "selected" );
-                        N--;
+                    licznik2=licznik2+1;
                   }
     
                 });
@@ -127,26 +102,34 @@ $(function(){
            });
     
     };
-    function wybor(){   
-        cn2=cn1;
+    function wybor(){ 
+        console.log(licznik);
+        console.log(licznik2);
+        console.log(licznik+liczba_max);
+        console.log(liczba_max);
+        if((licznik+liczba_max)==licznik2){
             for ( var i = 0; i < 15; i++){
                 for (var j=0; j<20; j++){
                     if($('.seat').eq((i*20)+j).hasClass( "selected" )){
                         seatings[(i*20)+j].ava=true; 
-                        cn2++;
-                        
+     
                     }
                 }
-            }
-        if(cn2!=cn1+N){
-            alert("Wyrano zla liczbe miejsc");
+            } 
+        } else{
+            window.alert("Wybierz odpowiednia liczbe miejsc");
+
         }
-    // xmlhttp.open("POST", "index.php", true);
-    // xmlhttp.send();
+  
+
+
 
     };
 
     function generacja(){
+        while(seatingValue2.length>0){
+            seatingValue2.pop();
+        }
         for ( var i = 0; i < 15; i++){
             for (var j=0; j<20; j++){
                 if(seatings[(i*20)+j].ava==true){
@@ -155,13 +138,7 @@ $(function(){
                     var seatingStyle = "<div class='seat available'></div>";
                 }
                 seatingValue2.push(seatingStyle);
-        
-                 if ( j === 19){
-                console.log("hi");
-                 var seatingStyle = "<div class='clearfix'></div>";
-                seatingValue2.push(seatingStyle);   
 
-             }
           }   
         }
         $('#messagePanel2').html(seatingValue2);

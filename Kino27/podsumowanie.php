@@ -1,7 +1,8 @@
 <?php 
 
     session_start();
-    $_SESSION['ID_repertuaru'] = $_POST['radios'];
+    $returntab = $_POST['returntab'];
+    $returntab = explode(',', $returntab);
     header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
   header("Pragma: no-cache"); // HTTP 1.0.
   header("Expires: 0"); // Proxies.
@@ -9,8 +10,6 @@
   mysqli_report(MYSQLI_REPORT_STRICT);
   
   
-  $zmienna = $_POST['radios'];
-
 
 	try{
 		$polaczenie = new  mysqli($host, $db_user, $db_password, $db_name);
@@ -20,13 +19,16 @@
 			}
 			else
 			{
-				$rezultat = $polaczenie->query(
-                "SELECT liczba_wolnych_miejsc
-                FROM repertuar
-                WHERE ID_repertuar = $zmienna
-                ");
-				if(!$rezultat) throw new Exception($polczenie->error);
-				$polaczenie->close();
+                for($i=0; $i<sizeof($returntab);$i++){
+                    $polaczenie->query(
+                        "UPDATE sala
+                        SET ID_rodzajstanu = $returntab[$i]
+                        WHERE ID_repertuar = $_SESSION['ID_repertuaru']
+                        ");
+                        if(!$rezultat) throw new Exception($polczenie->error);
+                     $polaczenie->close();
+                }
+				
 			}
 		
 	}catch(Exception $e){
@@ -124,22 +126,7 @@
          
                 
                 <div class="centered coloredt" >
-                <?php 
-                $row = $rezultat->fetch_assoc();
-
-                echo "Liczba dostępnych biletów: ".$row['liczba_wolnych_miejsc'];
-                ?>
-				<form action="rozklad.php"method="post">
-                <label for="uname"><b>Liczba Biletow Normlanych:</b></label>
-                    <input type="number" name="normal" required>
-                    <br>
-				        <label for="psw"><b>Liczba Biletow Ulgowych:  </b></label>
-                    <input type="number" name="ulga" required>
-   
-                </div>
-
-                   <input type="submit" id="btt" value="Wybierz Miejsce na Sali"/>
-                </form>
+                Gratulacje, dodokonałęś zakupu, przejdź do konta użytkowniak aby zobaczyć bielty
                 </div>
                 
               </table>

@@ -1,16 +1,16 @@
+
 <?php 
 
     session_start();
-    $_SESSION['ID_repertuaru'] = $_POST['radios'];
+    $normalny = $_POST['normal'];
+    $ulgowy = $_POST['ulga'];
     header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
   header("Pragma: no-cache"); // HTTP 1.0.
   header("Expires: 0"); // Proxies.
   require_once "connect.php";
   mysqli_report(MYSQLI_REPORT_STRICT);
-  
-  
-  $zmienna = $_POST['radios'];
-
+  $_SESSION['koszt']=15*$normalny+10*$ulgowy;
+  $zmienna=$_SESSION['ID_repertuaru'];
 
 	try{
 		$polaczenie = new  mysqli($host, $db_user, $db_password, $db_name);
@@ -21,8 +21,8 @@
 			else
 			{
 				$rezultat = $polaczenie->query(
-                "SELECT liczba_wolnych_miejsc
-                FROM repertuar
+                "SELECT ID_sala, ID_rodzajstanu
+                FROM sala
                 WHERE ID_repertuar = $zmienna
                 ");
 				if(!$rezultat) throw new Exception($polczenie->error);
@@ -32,20 +32,36 @@
 	}catch(Exception $e){
 		echo '<span style="color: red;"> Błąd serwera! Przepraszamy za niedogodności i prosimy o rejestrację w innym terminie!</span>';
 		echo '<br/>Informacja developerska:'.$e;
-	}
-	
+    }
+    
+    
+    $boolsArr=array();
+    while($row = $rezultat->fetch_assoc())
+          {
+            if($row['ID_rodzajstanu']==1){
+                array_push($boolsArr,false);
+            } else{
+                array_push($boolsArr,true);
+            }
+            
+          }
+    
+
 ?>
 <html>
     <head>
-        <title>Instal jQuery</title>
-        <link rel="stylesheet" href="CSS/mainStyle.css" type="text/css">
+        <title>Kino Odra</title>
+      <!--  <link rel="stylesheet" href="CSS/mainStyle.css" type="text/css"> -->
+        <link rel="stylesheet" href="CSS/styles.css" type="test/css">
         <script src ="scripts/jQuery.js"></script>
+        <script src ="scripts/script2.js"></script>
         <script src ="scripts/script.js"></script>
+        
 
     
     </head>
     <body>
-    
+    <!--
         <div id="mySidenav" class="sidenav">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
             <a href="filmy.php">Filmy</a>
@@ -74,19 +90,21 @@
 				<a href="konto.php">Moje Konto</a>
 			</li>
 			<li>
-				<?php if(isset($_SESSION['zalogowany']))
-						echo '<a href="logout.php">Wyloguj</a>';
+                
+				<?php/* if(isset($_SESSION['zalogowany']))
+						echo '<a href="logout.php">Wyloguj</a>';*/
 				?>
 			</li>
 		</ul>
     </div>
-
-          <!-- Use any element to open the sidenav -->
+        -->
+<!--
+          
           <div id="id01" class="modal">
                 <span onclick="document.getElementById('id01').style.display='none'" 
               class="close" title="Close Modal">&times;</span>
               
-                <!-- Modal Content -->
+                
                 <form class="modal-content animate" action="/action_page.php">
                   <div class="imgcontainer">
                     <img src="images/avatar_2.png"  height="25%" width="25%" alt="Avatar" class="avatar">
@@ -100,14 +118,12 @@
                     <input type="password" placeholder="Wprowadź Hasło" name="psw" required>
               
                     <button type="submit">Login</button>
-                   <!-- <label>
-                      <input type="checkbox" checked="checked" name="remember"> Remember me
-                    </label>-->
+    
                   </div>
               
                   <div class="container" style="background-color:#f1f1f1">
                     <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
-                    <!-- <span class="psw">Forgot <a href="#">password?</a></span> -->
+
                   </div>
                 </form>
               </div>
@@ -117,35 +133,14 @@
 
           </div>
     
-    
-          <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
- 
                 
-         
-                
-                <div class="centered coloredt" >
-                <?php 
-                $row = $rezultat->fetch_assoc();
-
-                echo "Liczba dostępnych biletów: ".$row['liczba_wolnych_miejsc'];
-                ?>
-				<form action="rozklad.php"method="post">
-                <label for="uname"><b>Liczba Biletow Normlanych:</b></label>
-                    <input type="number" name="normal" required>
-                    <br>
-				        <label for="psw"><b>Liczba Biletow Ulgowych:  </b></label>
-                    <input type="number" name="ulga" required>
-   
-                </div>
-
-                   <input type="submit" id="btt" value="Wybierz Miejsce na Sali"/>
-                </form>
-                </div>
-                
-              </table>
-           
-              
-          </div>
+        -->
+            
+        <button  class="ha" id="btnSeating" >Pokaz Sale</button>
+        <div id="messagePanel" class="messagePanel"></div>
+        <button class="ha" id="btnChoice" >Dokonalem Wyboru</button>
+        <button class="ha" id="btnGeneruj2" >generuj</button>
+        <div id="messagePanel2" class="messagePanel"></div>
 
     </body>
     </html>
