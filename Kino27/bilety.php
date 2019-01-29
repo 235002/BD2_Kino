@@ -129,7 +129,7 @@
 
                 echo "Liczba dostępnych biletów: ".$row['liczba_wolnych_miejsc'];
                 ?>
-				<form action="rozklad.php"method="post">
+				      <form action="rozklad.php"method="post">
                 <label for="uname"><b>Liczba Biletow Normlanych:</b></label>
                     <input type="number" name="normal" required>
                     <br>

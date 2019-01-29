@@ -52,181 +52,173 @@
 ?>
 <html>
 <head>
-<title>Kino Odra</title>
-    <link rel="stylesheet" href="CSS/styles.css">
-    <link rel="stylesheet" href="CSS/mainStyle.css" type="text/css">
-    <script src ="scripts/jQuery.js"></script>
-    <script src ="scripts/script.js"></script>
-    <script>
-        $(function(){
+	<title>Kino Odra</title>
+	<link rel="stylesheet" href="CSS/styles.css">
+	<link rel="stylesheet" href="CSS/mainStyle.css" type="text/css">
+	<script src="scripts/jQuery.js"></script>
+	<script src="scripts/script.js"></script>
+	<script>
+		$(function() {
+			$('#btnSeating').on('click', createseating);
+			$('#btnChoice').on('click', wybor);
+			$('#btnGeneruj2').on('click', generacja);
+		});
+		class seat_class {
+			constructor(x, zajete) {
+				this.miejsce = x;
+				this.ava = zajete;
+			}
+			zmien(x) {
+				this.ava = x;
+			}
+		}
 
-$('#btnSeating').on('click', createseating);
-$('#btnChoice').on('click', wybor);
-$('#btnGeneruj2').on('click', generacja);
+		var liczba_max = JSON.parse('<?php echo json_encode($locliczba2) ?>');
+		var licznik = 0;
+		var licznik2 = 0;
+		var seatings = [];
+		var seatings2 =[];
+		var seatingValue = [];
+		var seatingValue2 = [];
+		var tmp;
+		var tab = JSON.parse('<?php echo json_encode($boolsArr) ?>');
 
-});
-class seat_class{
-    constructor(x,zajete){
-        this.miejsce = x;
-        this.ava=zajete;
-    }
-    zmien(x){
-        this.ava=x;
-    }
-}
+		function createseating() {
 
+			for (var i = 0; i < 15; i++) {
+				for (var j = 0; j < 20; j++) {
+					tmp = tab[(i * 20) + j];
+					if (tmp) {
+						seatings[(i * 20) + j] = new seat_class((i * 20) + j, true);
+						licznik = licznik + 1;
+						licznik2 = licznik2 + 1;
+					} else {
+						seatings[(i * 20) + j] = new seat_class((i * 20) + j, false);
+					}
+				}
+			}
+			seatings2 =seatings;
+            seatingValue = [];
+			for (var i = 0; i < 15; i++) {
+				for (var j = 0; j < 20; j++) {
+					if (seatings[(i * 20) + j].ava) {
+						var seatingStyle = "<div class='seat unavailable'></div>";
+					} else {
+						var seatingStyle = "<div class='seat available'></div>";
+					}
+					seatingValue.push(seatingStyle);
+				}
+			}
 
+			$('#messagePanel').html(seatingValue);
 
-var liczba_max= JSON.parse('<?php echo json_encode($locliczba2) ?>');
-var licznik=0;
-var licznik2=0;
-var seatings=[];
-var seatingValue = [];
-var seatingValue2 = [];
-var tmp;
-var tab=JSON.parse('<?php echo json_encode($boolsArr) ?>');
-function createseating(){
+			$(function() {
+				$('.seat').on('click', function() {
+					if ($(this).hasClass("unavailable")) {
+						$(this).addClass("unavailable")
 
-for ( var i = 0; i < 15; i++){   
-    for (var j=0; j<20; j++){
-        tmp=tab[(i*20)+j];
-        if(tmp==true){
-           seatings[(i*20)+j]= new seat_class((i*20)+j,true);
-           licznik=licznik+1;
-           licznik2=licznik2+1;
-        }else{
-            seatings[(i*20)+j]= new seat_class((i*20)+j,false);     
-        }
-    }
-}
+					} else if ($(this).hasClass("selected")) {
+						$(this).removeClass("selected");
+						licznik2 = licznik2 - 1;
 
-while(seatingValue.length>0){
-seatingValue.pop();
-}
- for ( var i = 0; i < 15; i++){
-   
-    for (var j=0; j<20; j++){
-        if(seatings[(i*20)+j].ava==true){
-            var seatingStyle = "<div class='seat unavailable'></div>";
-            
+					} else {
+						$(this).addClass("selected");
+						licznik2 = licznik2 + 1;
+					}
 
-        }else{
-            
-            var seatingStyle = "<div class='seat available'></div>";
-            
-        }
-       
-        seatingValue.push(seatingStyle);
-       
+				});
 
-  }   
-}
+				$('.seat').mouseenter(function() {
+					$(this).addClass("hovering");
 
-$('#messagePanel').html(seatingValue);
-     
-       $(function(){
-            $('.seat').on('click',function(){ 
-                if($(this).hasClass( "unavailable" )){
-                    $( this ).addClass( "unavailable" )   
-                              
-              } else if($(this).hasClass( "selected" )){
-                $( this ).removeClass( "selected" );
-                licznik2=licznik2-1;
+					$('.seat').mouseleave(function() {
+						$(this).removeClass("hovering");
 
-              }else{                   
-                $( this ).addClass( "selected" );
-                licznik2=licznik2+1;
-              }
+					});
+				});
+			});
+		};
 
-            });
+		function wybor() {
+			if ((licznik + liczba_max) == licznik2) {
+				for (var i = 0; i < 15; i++) {
+					for (var j = 0; j < 20; j++) {
+						if ($('.seat').eq((i * 20) + j).hasClass("selected")) {
+							seatings[(i * 20) + j].ava = true;
+						}
+					}
+				}
+				var returntab = [];
+				for (var i = 0; i < 15; i++) {
+					for (var j = 0; j < 20; j++) {
+						if (!seatings[(i * 20) + j].ava) {
+							returntab[(i * 20) + j] = 1;
+						} else {
+							returntab[(i * 20) + j] = 2;
+						}
+					}
+				}
+				//JSON.stringify(returntab);
+				returntab.join(',');
+				var numMiejsc=[];
+				for(var i=0; i<returntab.length;i++){
+					if (seatings2[i]!=returntab[i]){
+						numMiejsc.push(i+1);
+					}
 
-            $('.seat').mouseenter(function(){     
-                $( this ).addClass( "hovering" );
+				}
+				document.cookie = "varname=numMiejsc";
+				document.cookie = "varname=returntab";
+				//returntab.join(',');
+				//$.post('podsumowanie.php', {'returntab': returntab});
+				//$.ajax(
+				//	{
+				//	type: 'post',
+				//	url: 'podsumowanie.php',
+				//	data: {returntab: returntab}
+				//	})
+					
+				document.location.href = 'podsumowanie.php';
+					
+			} else {
+				window.alert("Wybierz odpowiednia liczbe miejsc");
+			}
+		};
 
-                   $('.seat').mouseleave(function(){ 
-                   $( this ).removeClass( "hovering" );
-                      
-                   });
-            });
+		function generacja() {
+			while (seatingValue2.length > 0) {
+				seatingValue2.pop();
+			}
+			for (var i = 0; i < 15; i++) {
+				for (var j = 0; j < 20; j++) {
+					if (seatings[(i * 20) + j].ava == true) {
+						var seatingStyle = "<div class='seat unavailable'></div>";
+					} else {
+						var seatingStyle = "<div class='seat available'></div>";
+					}
+					seatingValue2.push(seatingStyle);
 
+				}
+			}
+			$('#messagePanel2').html(seatingValue2);
+		};
+	</script>
 
-       });
-
-};
-function wybor(){ 
-
-    if((licznik+liczba_max)==licznik2){
-        for ( var i = 0; i < 15; i++){
-            for (var j=0; j<20; j++){
-                if($('.seat').eq((i*20)+j).hasClass( "selected" )){
-                    seatings[(i*20)+j].ava=true; 
- 
-                }
-            }
-        } 
-    var returntab=[];
-    for ( var i = 0; i < 15; i++){
-            for (var j=0; j<20; j++){
-                if(seatings[(i*20)+j].ava==false){
-                    returntab[(i*20)+j]=1;
-                }else{
-                    returntab[(i*20)+j]=2;
-                }
-            }
-    }
-    returntab.join(',');
-    $.post('podsumowanie.php', {returntab: returntab})     
-    document.location.href = 'podsumowanie.php'; 
- 
-    } else{
-        window.alert("Wybierz odpowiednia liczbe miejsc");
-
-    }
-
-
-
-
-};
-
-function generacja(){
-    while(seatingValue2.length>0){
-        seatingValue2.pop();
-    }
-    for ( var i = 0; i < 15; i++){
-        for (var j=0; j<20; j++){
-            if(seatings[(i*20)+j].ava==true){
-                var seatingStyle = "<div class='seat unavailable'></div>";
-            }else{
-                var seatingStyle = "<div class='seat available'></div>";
-            }
-            seatingValue2.push(seatingStyle);
-
-      }   
-    }
-    $('#messagePanel2').html(seatingValue2);
-};
-    </script>
-<script>
-
-</script>
 </head>
 <body>
-<?php
-
-
-?>
-    <div id="mySidenav" class="sidenav">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="filmy.php">Filmy</a>
-        <a href="#">Repertuar</a>
-        <a href="#">Kup</a>
-        <a href="#">Zarezerwuj</a>
-    </div>
-
-    <div  id="menu">
-		<ul >
+	<div id="mySidenav" class="sidenav">
+		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+		<a href="filmy.php">Filmy</a>
+		<a href="#">Repertuar</a>
+		<a href="#">Kup</a>
+		<a href="#">Zarezerwuj</a>
+	</div>
+	<div id="menu">
+		<ul>
 			<li>
-				<a href="#news"><span color onclick="openNav()">Menu</span></a>
+				<a href="#news">
+					<span color onclick="openNav()">Menu</span>
+				</a>
 			</li>
 			<li>
 				<a class="active" href="index.php">Home</a>
@@ -249,47 +241,43 @@ function generacja(){
 				?>
 			</li>
 		</ul>
-    </div>
-
-    <div id="id01" class="modal">
-            <span onclick="document.getElementById('id01').style.display='none'" 
-          class="close" title="Close Modal">&times;</span>
-          
-			<!-- Modal Content -->
-			
-            <form method="post" class="modal-content animate" action="zaloguj.php">
-				<div class="imgcontainer">
-					<img src="images/avatar_2.png"  height="25%" width="25%" alt="Avatar" class="avatar">
-				</div>
-			
-				<div class="container">
-					<label for="uname"><b>Login</b></label>
-					<input type="text" placeholder="Wprowadź Login" name="login" required>
-					<label for="psw"><b>Hasło</b></label>
-					<input type="password" placeholder="Wprowadź Hasło" name="haslo" required>
-			
-					<button type="submit">Zaloguj</button>
+	</div>
+	<div id="id01" class="modal">
+		<span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+		<!-- Modal Content -->
+		<form method="post" class="modal-content animate" action="zaloguj.php">
+			<div class="imgcontainer">
+				<img src="images/avatar_2.png" height="25%" width="25%" alt="Avatar" class="avatar">
+			</div>
+			<div class="container">
+				<label for="uname">
+					<b>Login</b>
+				</label>
+				<input type="text" placeholder="Wprowadź Login" name="login" required>
+				<label for="psw">
+					<b>Hasło</b>
+				</label>
+				<input type="password" placeholder="Wprowadź Hasło" name="haslo" required>
+				<button type="submit">Zaloguj</button>
 				<!-- <label>
 					<input type="checkbox" checked="checked" name="remember"> Remember me
 					</label>-->
-				</div>
-			
-				<div class="container" style="background-color:#f1f1f1">
-					<button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Anuluj</button>
-					<!-- <span class="psw">Forgot <a href="#">password?</a></span> -->
-				</div>
-            </form>
-          </div>
-
-    <div id="center">
-    <button id="btnSeating" >Pokaz Sale</button>
-    <div id="ll"><?php echo "Liczba dostępnych biletów: ".$locliczba;?></div>
-    <div id="messagePanel" class="messagePanel"></div>
-    <button id="btnChoice" >Dokonalem Wyboru</button>
-    <button id="btnGeneruj2" >generuj</button>
-    <div id="messagePanel2" class="messagePanel"></div>
-    </div>
+			</div>
+			<div class="container" style="background-color:#f1f1f1">
+				<button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Anuluj</button>
+				<!-- <span class="psw">Forgot <a href="#">password?</a></span> -->
+			</div>
+		</form>
+	</div>
+	<div id="center">
+		<button id="btnSeating">Pokaz Sale</button>
+		<div id="ll">
+			<?php echo "Liczba dostępnych biletów: ".$locliczba;?>
+		</div>
+		<div id="messagePanel" class="messagePanel"></div>
+		<button id="btnChoice">Dokonalem Wyboru</button>
+		<button id="btnGeneruj2">generuj</button>
+		<div id="messagePanel2" class="messagePanel"></div>
+	</div>
 </body>
-
 </html>
-

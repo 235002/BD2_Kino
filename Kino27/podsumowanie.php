@@ -1,8 +1,12 @@
 <?php 
 
-    session_start();
-    $returntab = $_POST['returntab'];
+  session_start();
+    $returntab = $_COOKIE['varname'];
+    $numMiejsc = $_COOKIE['numMiejsc']
     $returntab = explode(',', $returntab);
+    
+
+    
     header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
   header("Pragma: no-cache"); // HTTP 1.0.
   header("Expires: 0"); // Proxies.
@@ -19,13 +23,14 @@
 			}
 			else
 			{
+                
                 for($i=0; $i<sizeof($returntab);$i++){
                     $polaczenie->query(
                         "UPDATE sala
                         SET ID_rodzajstanu = $returntab[$i]
-                        WHERE ID_repertuar = $_SESSION['ID_repertuaru']
+                        WHERE ID_repertuar = 130
                         ");
-                        if(!$rezultat) throw new Exception($polczenie->error);
+                       // if(!$rezultat) throw new Exception($polczenie->error);
                      $polaczenie->close();
                 }
 				
