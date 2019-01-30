@@ -57,6 +57,7 @@
 	<link rel="stylesheet" href="CSS/mainStyle.css" type="text/css">
 	<script src="scripts/jQuery.js"></script>
 	<script src="scripts/script.js"></script>
+	<script src="scripts/jCook.js"></script>
 	<script>
 		$(function() {
 			$('#btnSeating').on('click', createseating);
@@ -92,12 +93,15 @@
 						seatings[(i * 20) + j] = new seat_class((i * 20) + j, true);
 						licznik = licznik + 1;
 						licznik2 = licznik2 + 1;
+						seatings2[(i * 20) + j]=2;
 					} else {
 						seatings[(i * 20) + j] = new seat_class((i * 20) + j, false);
+						seatings2[(i * 20) + j]=1;
 					}
 				}
 			}
-			seatings2 =seatings;
+
+			
             seatingValue = [];
 			for (var i = 0; i < 15; i++) {
 				for (var j = 0; j < 20; j++) {
@@ -159,20 +163,22 @@
 					}
 				}
 				//JSON.stringify(returntab);
-				returntab.join(',');
+				
 				var numMiejsc=[];
 				for(var i=0; i<returntab.length;i++){
 					if (seatings2[i]!=returntab[i]){
-						numMiejsc.push(i+1);
+						var num = i+1;
+						var n = num.toString();
+						numMiejsc.push(n);
 					}
 
 				}
-				$.cookie('numMiejsc', JSON.stringify(myAry));
-				$.cookie('returntab', JSON.stringify(myAry));
-				
+				console.log(returntab);
+				var x =JSON.stringify(numMiejsc)
+				$.setCookie('numMiejsc', x );
+				console.log(seatings2);
 				//document.cookie = "varname=numMiejsc";
-				//document.cookie = "varname=returntab";
-				
+				//document.cookie = "varname2=returntab";
 				//returntab.join(',');
 				//$.post('podsumowanie.php', {'returntab': returntab});
 				//$.ajax(

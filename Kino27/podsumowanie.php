@@ -1,21 +1,22 @@
 <?php 
 
   session_start();
-  
-    $returntab = json_decode( $_COOKIE['returntab'], true );
+
+    //$numMiejsc = $_COOKIE['varname'];
     $numMiejsc = json_decode( $_COOKIE['numMiejsc'], true );
+    //$cookie_exampleData = $_COOKIE['varname'];
+    //$nummiejsc = json_decode($cookie_exampleData);
 
     
 
-    
-  header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
   header("Pragma: no-cache"); // HTTP 1.0.
   header("Expires: 0"); // Proxies.
   require_once "connect.php";
   mysqli_report(MYSQLI_REPORT_STRICT);
   
+  print_r($numMiejsc);
   
-
+/*
 	try{
 		$polaczenie = new  mysqli($host, $db_user, $db_password, $db_name);
 		if ($polaczenie->connect_errno!=0)
@@ -40,7 +41,8 @@
 	}catch(Exception $e){
 		echo '<span style="color: red;"> Błąd serwera! Przepraszamy za niedogodności i prosimy o rejestrację w innym terminie!</span>';
 		echo '<br/>Informacja developerska:'.$e;
-	}
+  }
+  */
 	
 ?>
 <html>
