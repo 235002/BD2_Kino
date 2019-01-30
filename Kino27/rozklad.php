@@ -167,8 +167,12 @@
 					}
 
 				}
-				document.cookie = "varname=numMiejsc";
-				document.cookie = "varname=returntab";
+				$.cookie('numMiejsc', JSON.stringify(myAry));
+				$.cookie('returntab', JSON.stringify(myAry));
+				
+				//document.cookie = "varname=numMiejsc";
+				//document.cookie = "varname=returntab";
+				
 				//returntab.join(',');
 				//$.post('podsumowanie.php', {'returntab': returntab});
 				//$.ajax(
