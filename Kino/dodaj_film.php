@@ -115,7 +115,7 @@
 			}
 			else
 			{	
-				$query = "insert into Film (`tytul`, `rezyser`, `scenariusz`, `gatunek`, `premiera`, `kraj_pochodzenia`, `czas_trwania`) 
+				$query = "INSERT INTO Film (`tytul`, `rezyser`, `scenariusz`, `gatunek`, `premiera`, `kraj_pochodzenia`, `czas_trwania`) 
 									values ('$tytul', '$rezyser', '$scenariusz', '$gatunek', '$premiera', '$kraj_pochodzenia', '$czas_trwania');";
 				$query2 = "SELECT ID_film FROM Film WHERE tytul='$tytul' AND rezyser='$rezyser'  AND scenariusz='$scenariusz' AND gatunek='$gatunek'
 													AND premiera='$premiera' AND kraj_pochodzenia='$kraj_pochodzenia' AND czas_trwania='$czas_trwania';";

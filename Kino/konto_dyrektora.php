@@ -88,6 +88,8 @@
 
 				<table>
 					<th>Operacje możliwe do wykonania</th>
+					<tr><td><a href="moje_zamowienia.php" style="text-decoration: none; color: white;">Moje Zamówienia</a></td></tr>
+					<tr><td><a href="moje_bilety.php" style="text-decoration: none; color: white;">Moje Bilety</a></td></tr>
 					<tr><td><a href="dodaj_film.php" style="text-decoration: none; color: white;">Dodaj nowy film</a></td></tr>
 					<tr><td><a href="modyfikuj_film.php" style="text-decoration: none; color: white;">Modyfikuj film</a></td></tr>
 					<tr><td><a href="usun_film.php" style="text-decoration: none; color: white;">Usuń film</a></td></tr>

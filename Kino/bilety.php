@@ -89,15 +89,17 @@
   </div>
     
   <div class="centered coloredt" >
-    <?php 
-      $row = $rezultat->fetch_assoc();
-      echo "Liczba dostępnych biletów: ".$row['liczba_wolnych_miejsc'];
-    ?>
-    <form action="install.php"method="post">
+    <div style="color: white;">
+      <?php 
+        $row = $rezultat->fetch_assoc();
+        echo "Liczba dostępnych biletów: ".$row['liczba_wolnych_miejsc'];
+      ?>
+    </div>
+    <form action="rozklad.php"method="post">
       <label for="uname"><b>Liczba Biletow Normlanych:</b></label>
-      <input type="number" name="login" required><br/>
+      <input type="number" name="normal" required><br/>
       <label for="psw"><b>Liczba Biletow Ulgowych:  </b></label>
-      <input type="number" name="haslo" required>
+      <input type="number" name="ulga" required>
       <input type="submit" id="btt" value="Wybierz Miejsce na Sali"/>
     </form>
   </div>
