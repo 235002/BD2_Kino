@@ -1,13 +1,14 @@
 <?php 
 
   session_start();
-    $returntab = $_COOKIE['varname'];
-    $numMiejsc = $_COOKIE['numMiejsc']
-    $returntab = explode(',', $returntab);
+  
+    $returntab = json_decode( $_COOKIE['returntab'], true );
+    $numMiejsc = json_decode( $_COOKIE['numMiejsc'], true );
+
     
 
     
-    header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
+  header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
   header("Pragma: no-cache"); // HTTP 1.0.
   header("Expires: 0"); // Proxies.
   require_once "connect.php";
